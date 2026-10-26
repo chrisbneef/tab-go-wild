@@ -1,10 +1,20 @@
 ---
-import { activePhone, canCall } from '../config/site.js';
+import Icon from './Icon.astro';
+import { activePhone, telHref, smsHref } from '../config/site.js';
 const phone = activePhone();
+const sms = smsHref();
 ---
-<div class="mobile-cta" role="complementary" aria-label="Quick contact">
-  {canCall()
-    ? <a class="btn btn-ghost" href={`tel:${phone.e164}`}>Call {phone.display}</a>
-    : <a class="btn btn-ghost" href="/roof-cost-estimator/">Cost estimator</a>}
-  <a class="btn btn-primary" href="/get-a-quote/">Free quote</a>
+<div class="mobile-cta" role="complementary" aria-label="Call">
+  <a class="btn btn-call" href={telHref()} data-call><Icon name="phone" />Call {phone.display}</a>
+  {sms
+    ? <a class="btn btn-ghost" href={sms} aria-label="Send a text">Text</a>
+    : <a class="btn btn-ghost" href="/roof-cost-estimator/" aria-label="Roof cost estimator"><Icon name="calc" /></a>}
 </div>
+<script>
+  const bar = document.querySelector('.mobile-cta');
+  const hero = document.querySelector('[data-hero] .btn-row, .page-head .btn-row');
+  if (bar && hero && 'IntersectionObserver' in window) {
+    bar.classList.add('is-hidden');
+    new IntersectionObserver(([e]) => bar.classList.toggle('is-hidden', e.isIntersecting || e.boundingClientRect.top > 0)).observe(hero);
+  }
+</script>

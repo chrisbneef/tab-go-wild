@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
-import QuoteForm from '../components/QuoteForm.astro';
+import CallPanel from '../components/CallPanel.astro';
+import CallButton from '../components/CallButton.astro';
 import SourceList from '../components/SourceList.astro';
 import { MATERIAL_RATES, PITCH } from '../data/costs.js';
 const crumbs = [{ name: 'Home', url: '/' }, { name: 'Roof cost estimator', url: '/roof-cost-estimator/' }];
@@ -10,7 +11,6 @@ const schema = [{ '@type': 'WebApplication', name: 'Oregon Roof Replacement Cost
 ---
 <Base title="Roof Replacement Cost Estimator for Oregon Homes (2026)" description="Free roof cost estimator for Lake Oswego, West Linn, Oregon City and the Portland area. Enter your home size, pitch and material for a price range based on published cost data." crumbs={crumbs} schema={schema}>
   <div class="page-head"><div class="wrap">
-    <p class="eyebrow">Free tool</p>
     <h1>Roof replacement cost estimator</h1>
     <p class="lead" style="max-width:60ch">A quick range for your home, built from published Oregon and Portland-area cost data. Every source is listed below the tool.</p>
   </div></div>
@@ -31,8 +31,10 @@ const schema = [{ '@type': 'WebApplication', name: 'Oregon Roof Replacement Cost
           <div class="small" id="e-area"></div>
           <p class="small muted" id="e-note" style="margin:.6em 0 0"></p>
         </div>
-        <p class="small" style="margin-top:14px"><strong>Want a firm number?</strong> Send this estimate with your request and a CCB-licensed local roofer will price your actual roof.</p>
-        <a class="btn btn-primary" href="#quote" style="width:100%">Get an exact quote</a>
+        <div class="est-next">
+          <p style="margin-bottom:.8em"><strong>Want a firm number?</strong> Call to talk with a local, CCB-licensed roofer who can price your actual roof. If we miss you, leave a message and we'll get back to you.</p>
+          <CallButton label="Call" size="lg" class="full" />
+        </div>
       </div>
       <div class="prose" style="margin-top:28px">
         <h2>How the estimate works</h2>
@@ -42,11 +44,11 @@ const schema = [{ '@type': 'WebApplication', name: 'Oregon Roof Replacement Cost
           <li><strong>Price:</strong> roof area × the published installed cost per square foot for the material, low to high, rounded to $500.</li>
         </ol>
         <p>It doesn't know about extra layers, rotted decking, chimneys, skylights, access or your HOA. Those are why a written bid after an inspection is the only real price. Garages and covered porches add roof area too.</p>
-        <p><a href="/roof-replacement-cost/">Read the full roof cost guide →</a></p>
+        <p><a href="/roof-replacement-cost/">Read the full roof cost guide</a></p>
         <SourceList keys={keys} />
       </div>
     </div>
-    <aside class="sticky-side"><QuoteForm heading="Get an exact quote" defaultService="Roof Replacement" source="estimator" /></aside>
+    <aside class="sticky-side"><CallPanel heading="Get a real number" context="pricing your roof" /></aside>
   </div></section>
 </Base>
 <script>
@@ -64,9 +66,8 @@ const schema = [{ '@type': 'WebApplication', name: 'Oregon Roof Replacement Cost
       const area = (sqft / stories) * pitch.factor;
       const lo = area * mat.low, hi = area * mat.high;
       $('e-range').textContent = `${money(lo)} – ${money(hi)}`;
-      $('e-area').textContent = `≈ ${Math.round(area).toLocaleString()} sq ft of roof (${(area / 100).toFixed(1)} squares) · ${mat.label}`;
+      $('e-area').textContent = `≈ ${Math.round(area).toLocaleString()} sq ft of roof (${(area / 100).toFixed(1)} squares), ${mat.label}`;
       $('e-note').textContent = mat.note;
-      try { sessionStorage.setItem('wfr_estimate', `${mat.label}, ${sqft} sq ft, ${stories} story, ${pitch.label}: ${money(lo)}–${money(hi)}`); } catch {}
     }
     root.querySelectorAll('input,select').forEach((el) => el.addEventListener('input', calc));
     calc();

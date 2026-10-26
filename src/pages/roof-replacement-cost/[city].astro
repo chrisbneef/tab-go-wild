@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
-import QuoteForm from '../../components/QuoteForm.astro';
+import CallPanel from '../../components/CallPanel.astro';
+import CallButton from '../../components/CallButton.astro';
 import SourceList from '../../components/SourceList.astro';
 import EstimateTable from '../../components/EstimateTable.astro';
 import { REPLACEMENT_FIGURES, MATERIAL_RATES, OTHER_COSTS } from '../../data/costs.js';
@@ -22,9 +23,8 @@ const faqs = [
 const keys = [...portland.map((f) => f.src), ...Object.values(MATERIAL_RATES).flatMap((r) => r.srcs)];
 const others = CITIES.filter((x) => x.slug !== c.slug);
 ---
-<Base title={title} description={desc} crumbs={crumbs} ogImage={`/og/${c.slug}.png`} schema={[articleSchema({ headline: title, description: desc, url }), faqSchema(faqs)]}>
+<Base title={title} description={desc} crumbs={crumbs} ogImage={`/og/${c.slug}.jpg`} schema={[articleSchema({ headline: title, description: desc, url }), faqSchema(faqs)]}>
   <div class="page-head"><div class="wrap">
-    <p class="eyebrow">{c.name} cost guide · 2026</p>
     <h1>Roof replacement cost in {c.name}</h1>
     <p class="lead" style="max-width:62ch">Published Portland-area figures put a typical asphalt reroof at roughly <strong>$8,000 to $36,000</strong>. Here's how {c.name}'s homes shift that, with every number sourced.</p>
   </div></div>
@@ -55,10 +55,10 @@ const others = CITIES.filter((x) => x.slug !== c.slug);
       <h2>Questions</h2>
       {faqs.map((f) => <details><summary>{f.q}</summary><div class="a">{f.a}</div></details>)}
 
-      <p><a href={`/areas/${c.slug}/`}>Roofing in {c.name}: local guide →</a></p>
+      <p><a href={`/areas/${c.slug}/`}>Roofing in {c.name}: local guide</a></p>
       <ul class="pill-list">{others.map((o) => <li><a href={`/roof-replacement-cost/${o.slug}/`}>Roof cost in {o.name}</a></li>)}</ul>
       <SourceList keys={[...keys, ...OTHER_COSTS.map((o) => o.src)]} extra={[{ name: `Census Reporter, ${c.name} profile (ACS 2020–2024)`, url: c.census.profile, basis: 'page' }]} />
     </article>
-    <aside class="sticky-side"><QuoteForm heading={`Get a real number for your ${c.name} roof`} defaultCity={c.name} defaultService="Roof Replacement" source={`cost:${c.slug}`} /></aside>
+    <aside class="sticky-side"><CallPanel /></aside>
   </div></section>
 </Base>

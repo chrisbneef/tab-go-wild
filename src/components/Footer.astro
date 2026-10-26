@@ -1,6 +1,6 @@
 ---
 import LicenseLine from './LicenseLine.astro';
-import { SITE, brandName, activePhone, canCall } from '../config/site.js';
+import { SITE, brandName, activePhone, telHref, isPlaceholderPhone } from '../config/site.js';
 import { SERVICES } from '../data/services.js';
 import { CITIES } from '../data/cities.js';
 const phone = activePhone();
@@ -10,9 +10,10 @@ const year = new Date().getFullYear();
   <div class="wrap">
     <div class="foot-grid">
       <div>
-        <h3>{brandName()}</h3>
-        <p>Straight answers on roofs in Portland's south metro, and a fast way to get a licensed local roofer out to look at yours.</p>
-        <p>{canCall() ? <a href={`tel:${phone.e164}`}>{phone.display}</a> : <a href="/get-a-quote/">Request a callback</a>}</p>
+        <p class="brand">{brandName()}</p>
+        <p>Straight answers on roofs in Portland's south metro, and one phone number to talk with a licensed local roofer about yours.</p>
+        <p><a class="foot-num" href={telHref()} data-call>{phone.display}</a></p>
+        <p class="small">If we miss you, leave a message and we'll get back to you.{isPlaceholderPhone() && ' (Placeholder number until the tracking line is set up.)'}</p>
       </div>
       <div>
         <h3>Services</h3>
@@ -21,7 +22,7 @@ const year = new Date().getFullYear();
       <div>
         <h3>Areas</h3>
         <ul>{CITIES.map((c) => <li><a href={`/areas/${c.slug}/`}>{c.name}</a></li>)}</ul>
-        <h3 style="margin-top:1.2em">Costs</h3>
+        <h3 style="margin-top:1.4em">Costs</h3>
         <ul>{CITIES.slice(0,3).map((c) => <li><a href={`/roof-replacement-cost/${c.slug}/`}>Roof cost in {c.name}</a></li>)}</ul>
       </div>
       <div>
@@ -29,18 +30,19 @@ const year = new Date().getFullYear();
         <ul>
           <li><a href="/roof-cost-estimator/">Roof cost estimator</a></li>
           <li><a href="/resources/roof-replacement-guide/">Roof replacement guide (PDF)</a></li>
-          <li><a href="/resources/storm-leak-checklist/">Leak &amp; storm checklist</a></li>
+          <li><a href="/resources/storm-leak-checklist/">Leak and storm checklist</a></li>
           <li><a href="/roofing-materials/">Roofing materials</a></li>
           <li><a href="/faq/">FAQ</a></li>
           <li><a href="/how-it-works/">How it works</a></li>
           <li><a href="/privacy/">Privacy</a></li>
           <li><a href="/terms/">Terms</a></li>
+          <li><a href="/image-credits/">Image credits</a></li>
         </ul>
       </div>
     </div>
     <div class="legal">
       <LicenseLine />
-      <p>Cost figures on this site are estimates compiled from the published sources cited on each page; your roofer's written bid is the only real price. © {year} {brandName()}. Updated {SITE.updated}.</p>
+      <p>Cost figures on this site are estimates compiled from the published sources cited on each page; your roofer's written bid is the only real price. Photos are licensed stock and illustrate roofing in general; they don't show work by any roofer we connect you with. © {year} {brandName()}. Updated {SITE.updated}.</p>
     </div>
   </div>
 </footer>

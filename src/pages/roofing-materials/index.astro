@@ -9,7 +9,6 @@ const keys = Object.values(MATERIAL_RATES).flatMap((r) => r.srcs);
 ---
 <Base title="Roofing Materials for Oregon Homes: Asphalt, Metal, Cedar & Flat" description="Asphalt shingles, standing-seam metal, cedar shake and flat TPO roofs compared for Oregon rain and moss: lifespan, pros and cons, and installed cost per square foot with sources." crumbs={crumbs}>
   <div class="page-head"><div class="wrap">
-    <p class="eyebrow">Roofing materials</p>
     <h1>Which roof is right for an Oregon home?</h1>
     <p class="lead" style="max-width:62ch">Rain, shade and moss change the math. Here's how the four main options compare.</p>
   </div></div>
@@ -21,7 +20,7 @@ const keys = Object.values(MATERIAL_RATES).flatMap((r) => r.srcs);
       ); })}</tbody>
     </table></div>
     <div class="grid g2" style="margin-top:20px">
-      {MATERIALS.map((m) => <a class="card" href={`/roofing-materials/${m.slug}/`}><h3>{m.name}</h3><p class="muted">{m.short}</p><span class="more">Read more →</span></a>)}
+      {MATERIALS.map((m) => <a class="card" href={`/roofing-materials/${m.slug}/`}><h3>{m.name}</h3><p class="muted">{m.short}</p><span class="more">Read more </span></a>)}
     </div>
     <SourceList keys={keys} />
   </div></section>

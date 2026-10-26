@@ -1,0 +1,20 @@
+---
+import { Picture } from 'astro:assets';
+import { photo } from '../data/photos.js';
+const { slot, alt = null, sizes = '100vw', widths = [480, 800, 1200, 1600], eager = false, class: cls = '' } = Astro.props;
+const p = photo(slot);
+---
+{p && (
+  <Picture
+    src={p.src}
+    alt={alt ?? p.alt}
+    formats={['avif', 'webp']}
+    widths={widths.filter((w) => w <= p.src.width).concat(p.src.width < widths[0] ? [p.src.width] : [])}
+    sizes={sizes}
+    loading={eager ? 'eager' : 'lazy'}
+    decoding={eager ? 'sync' : 'async'}
+    fetchpriority={eager ? 'high' : undefined}
+    quality={eager ? 70 : 62}
+    class={cls}
+  />
+)}

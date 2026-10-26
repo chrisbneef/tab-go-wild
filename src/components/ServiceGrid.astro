@@ -1,16 +1,20 @@
 ---
-import Icon from './Icon.astro';
+import Photo from './Photo.astro';
 import { SERVICES } from '../data/services.js';
-const { city = null, exclude = null } = Astro.props;
+import { SERVICE_PHOTO } from '../data/photos.js';
+const { city = null, exclude = null, two = true } = Astro.props;
 const list = SERVICES.filter((s) => s.slug !== exclude);
 ---
-<div class="grid g3">
+<ul class={`svc-list ${two ? 'two' : ''}`}>
   {list.map((s) => (
-    <a class="card" href={`/services/${s.slug}/`}>
-      <div class="icon-badge"><Icon name={s.icon} /></div>
-      <h3>{city ? `${s.name} in ${city}` : s.name}</h3>
-      <p class="muted">{s.short}</p>
-      <span class="more">Learn more →</span>
-    </a>
+    <li id={city ? s.slug : undefined}>
+      <a href={`/services/${s.slug}/`}>
+        <span class="thumb"><Photo slot={SERVICE_PHOTO[s.slug]} alt="" sizes="96px" widths={[96, 192]} /></span>
+        <span>
+          <h3>{city ? `${s.name} in ${city}` : s.name}</h3>
+          <p>{s.short}</p>
+        </span>
+      </a>
+    </li>
   ))}
-</div>
+</ul>

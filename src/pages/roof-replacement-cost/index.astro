@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
-import QuoteForm from '../../components/QuoteForm.astro';
+import CallPanel from '../../components/CallPanel.astro';
+import CallButton from '../../components/CallButton.astro';
 import SourceList from '../../components/SourceList.astro';
 import EstimateTable from '../../components/EstimateTable.astro';
 import CtaBand from '../../components/CtaBand.astro';
@@ -18,9 +19,8 @@ const faqs = [
 ];
 const allKeys = [...REPLACEMENT_FIGURES.map((f) => f.src), ...Object.values(MATERIAL_RATES).flatMap((r) => r.srcs), ...OTHER_COSTS.map((c) => c.src)];
 ---
-<Base title={title} description={desc} crumbs={crumbs} ogImage="/og/costs.png" schema={[articleSchema({ headline: title, description: desc, url }), faqSchema(faqs)]}>
+<Base title={title} description={desc} crumbs={crumbs} ogImage="/og/costs.jpg" schema={[articleSchema({ headline: title, description: desc, url }), faqSchema(faqs)]}>
   <div class="page-head"><div class="wrap">
-    <p class="eyebrow">Cost guide · updated October 2026</p>
     <h1>What does a new roof cost in the Portland area?</h1>
     <p class="lead" style="max-width:62ch">Short answer: most published figures for typical homes fall between about <strong>$8,000 and $36,000</strong>, depending on size, pitch, tear-off and material. Here's every source we found, side by side.</p>
   </div></div>
@@ -66,7 +66,7 @@ const allKeys = [...REPLACEMENT_FIGURES.map((f) => f.src), ...Object.values(MATE
       {faqs.map((f) => <details><summary>{f.q}</summary><div class="a">{f.a}</div></details>)}
       <SourceList keys={allKeys} />
     </article>
-    <aside class="sticky-side"><QuoteForm heading="Get a real number for your roof" defaultService="Roof Replacement" source="cost-hub" /></aside>
+    <aside class="sticky-side"><CallPanel /></aside>
   </div></section>
   <CtaBand />
 </Base>

@@ -1,0 +1,10 @@
+---
+import Icon from './Icon.astro';
+import { activePhone, telHref } from '../config/site.js';
+const { label = 'Call', showNumber = true, size = '', variant = 'call', class: cls = '' } = Astro.props;
+const phone = activePhone();
+---
+<a class={`btn btn-${variant} ${size === 'lg' ? 'btn-lg' : ''} ${cls}`} href={telHref()} aria-label={`${label} ${phone.display}`} data-call>
+  <Icon name="phone" />
+  <span>{label}{showNumber && <span class="num"> {phone.display}</span>}</span>
+</a>

@@ -2,7 +2,7 @@
 
 Who to pitch first: well-reviewed south metro roofers with weak sites (from the Oct 25 West Linn research:
 e.g. Elkridge Roofing — 5.0, 57 Google reviews, site headline "Welcome to Our Site"). Verify every prospect's
-CCB license before you call. Best timing: once the site shows real call/form volume in the tracking dashboard.
+CCB license before you call. Best timing: once the site shows real weekly call volume in the tracking dashboard.
 
 Fill in the [brackets]. Numbers in *italics* are estimates, not promises — only quote real tracked numbers.
 
@@ -70,7 +70,7 @@ Lake Oswego, West Linn and Oregon City that's getting homeowners calling for roo
 for one roofer to send those calls to. Do you have two minutes?"
 
 **If yes**
-"Last month it got [X] calls and [Y] form requests: leaks, replacements, moss, gutters. Right now they go
+"Last month it got [X] calls ([Y] voicemails): leaks, replacements, moss, gutters. Right now they go
 to my voicemail because I'm not a roofer. I want them going to someone with good reviews, and you have
 [57 five-star reviews].
 

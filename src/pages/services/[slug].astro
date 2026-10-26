@@ -1,6 +1,9 @@
 ---
 import Base from '../../layouts/Base.astro';
-import QuoteForm from '../../components/QuoteForm.astro';
+import CallPanel from '../../components/CallPanel.astro';
+import CallButton from '../../components/CallButton.astro';
+import Photo from '../../components/Photo.astro';
+import { SERVICE_PHOTO } from '../../data/photos.js';
 import CtaBand from '../../components/CtaBand.astro';
 import SourceList from '../../components/SourceList.astro';
 import Icon from '../../components/Icon.astro';
@@ -20,14 +23,16 @@ const crumbs = [{ name: 'Home', url: '/' }, { name: 'Services', url: '/services/
 ---
 <Base title={s.title} description={s.metaDescription} crumbs={crumbs}
   schema={[serviceSchema({ name: s.name, description: s.metaDescription, url }), faqSchema(s.faqs)]}>
-  <div class="page-head"><div class="wrap">
-    <p class="eyebrow">{s.name} · Portland south metro</p>
-    <h1>{s.h1}</h1>
-    <p class="lead" style="max-width:62ch">{s.intro}</p>
-    <div class="btn-row"><a class="btn btn-primary" href="#quote">Get a free quote</a>{s.checklistLink && <a class="btn btn-ghost" href="/resources/storm-leak-checklist/">Leak first-steps checklist</a>}</div>
+  <div class="page-head with-photo"><div class="wrap">
+    <div>
+      <h1>{s.h1}</h1>
+      <p class="lead">{s.intro}</p>
+      <div class="btn-row"><CallButton label="Call" />{s.checklistLink ? <a class="btn btn-ghost" href="/resources/storm-leak-checklist/">Leak first-steps checklist</a> : <a class="btn btn-ghost" href="/roof-cost-estimator/">Estimate my cost</a>}</div>
+    </div>
+    <div class="head-photo"><Photo slot={SERVICE_PHOTO[s.slug]} eager sizes="(min-width:960px) 45vw, 100vw" widths={[480, 800, 1100]} /></div>
   </div></div>
 
-  <section style="padding-top:20px">
+  <section style="padding-top:0">
     <div class="wrap layout-2">
       <article class="prose">
         <h2>Signs you need {s.name.toLowerCase()}</h2>
@@ -63,7 +68,7 @@ const crumbs = [{ name: 'Home', url: '/' }, { name: 'Services', url: '/services/
 
         <SourceList keys={costs.map((c) => c.src)} extra={s.extraSources || []} />
       </article>
-      <aside class="sticky-side"><QuoteForm defaultService={s.name} source={`service:${s.slug}`} /></aside>
+      <aside class="sticky-side"><CallPanel context={s.name.toLowerCase()} /></aside>
     </div>
   </section>
   <CtaBand />

@@ -2,6 +2,18 @@
  * ============================================================
  *  THE ONE FILE THAT CONTROLS THE BRAND, PHONE AND RENTER.
  * ============================================================
+ *  >>> SWAP IN YOUR TRACKING NUMBER HERE <<<
+ *  The whole site drives to ONE phone number (no forms, no email capture).
+ *  Paste the call-tracking number (with voicemail + call recording) below and
+ *  set TRACKING_NUMBER_IS_PLACEHOLDER = false. Every call button updates.
+ *  (503) 555-01xx numbers are reserved for fiction and never ring anyone.
+ * ------------------------------------------------------------ */
+export const TRACKING_NUMBER = '(503) 555-0123';           // <- PLACEHOLDER: replace with the tracking number
+export const TRACKING_NUMBER_IS_PLACEHOLDER = true;        // <- set false once the real number is in
+export const TEXTING_ENABLED = false;                      // <- true only if the tracking number accepts SMS
+
+/**
+ * ============================================================
  *  Before a roofer rents the site:  RENTER.active = false
  *    -> the site presents itself as a local roofing resource that
  *       connects homeowners with a CCB-licensed roofer. It never
@@ -15,6 +27,11 @@
  *  See docs/README.md -> "Swap in the renter".
  */
 
+function toE164(display) {
+  const d = String(display).replace(/\D/g, '');
+  return d.length === 10 ? `+1${d}` : `+${d}`;
+}
+
 export const SITE = {
   // Brand (rename here; also update the domain in vercel + Search Console)
   name: 'Willamette Falls Roofing',
@@ -22,19 +39,19 @@ export const SITE = {
   tagline: 'Roof help for Portland\'s south metro',
   url: 'https://www.willamettefallsroofing.com',
   domain: 'willamettefallsroofing.com',
-  email: 'hello@willamettefallsroofing.com', // set up forwarding once the domain is bought
+  // Optional contact address for corrections and privacy requests only (NOT lead capture).
+  // Leave '' to show the phone number instead. Set up forwarding once the domain is bought.
+  email: '',
 
-  // PLACEHOLDER phone. Replace with the call-tracking number (see docs/README.md).
-  // While this placeholder is set, the site shows "Request a callback" instead of tap-to-call.
+  // Built from TRACKING_NUMBER above. Don't edit here.
+  // While the placeholder is set, call buttons still render (so the design is visible)
+  // and the page shows a small "placeholder number" note; the tests flag it.
   phone: {
-    display: '(503) 555-0123',
-    e164: '+15035550123',
-    isPlaceholder: true,
+    display: TRACKING_NUMBER,
+    e164: toE164(TRACKING_NUMBER),
+    isPlaceholder: TRACKING_NUMBER_IS_PLACEHOLDER,
   },
-
-  // Where the quote form posts. Default is the built-in Vercel function (api/quote.js).
-  // To use Formspree instead, paste your form URL, e.g. 'https://formspree.io/f/xxxxxxx'.
-  formEndpoint: '/api/quote',
+  texting: TEXTING_ENABLED,
 
   serviceArea: {
     primary: ['Lake Oswego', 'West Linn', 'Oregon City'],
@@ -80,4 +97,7 @@ export const activePhone = () => {
   return SITE.phone;
 };
 
-export const canCall = () => !activePhone().isPlaceholder;
+/** Call buttons always render. This only says whether the number is real yet. */
+export const isPlaceholderPhone = () => !!activePhone().isPlaceholder;
+export const telHref = () => `tel:${activePhone().e164}`;
+export const smsHref = () => (SITE.texting ? `sms:${activePhone().e164}` : null);

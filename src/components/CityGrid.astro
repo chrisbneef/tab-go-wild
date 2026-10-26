@@ -1,13 +1,19 @@
 ---
+import Photo from './Photo.astro';
 import { CITIES } from '../data/cities.js';
 const { exclude = null } = Astro.props;
+const list = CITIES.filter((c) => c.slug !== exclude);
+const primary = ['lake-oswego', 'west-linn', 'oregon-city'];
+const showPrimary = !exclude;
 ---
-<div class="grid g3">
-  {CITIES.filter((c) => c.slug !== exclude).map((c) => (
-    <a class="card" href={`/areas/${c.slug}/`}>
-      <h3>{c.name}</h3>
-      <p class="muted small">Median home built {c.census.medianYearBuilt} · {c.census.ownerShare}% owner-occupied</p>
-      <span class="more">Roofing in {c.name} →</span>
+<div class="cities">
+  {list.map((c) => (
+    <a class={`city ${showPrimary && primary.includes(c.slug) ? 'primary' : ''}`} href={`/areas/${c.slug}/`}>
+      <Photo slot={c.slug} alt="" sizes="(min-width:760px) 33vw, 100vw" widths={[400, 700, 1000]} />
+      <span class="label">
+        <strong>{c.name}</strong>
+        <span>Homes built around {c.census.medianYearBuilt}, {c.census.ownerShare}% owner-occupied</span>
+      </span>
     </a>
   ))}
 </div>

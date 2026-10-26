@@ -1,0 +1,23 @@
+---
+import Base from '../layouts/Base.astro';
+import { IMAGE_CREDITS } from '../data/imageCredits.js';
+const crumbs = [{ name: 'Home', url: '/' }, { name: 'Image credits', url: '/image-credits/' }];
+---
+<Base title="Image Credits" description="Sources, photographers and licenses for the photos used on this site. All photos are licensed stock or Creative Commons images." crumbs={crumbs} noindex>
+  <section><div class="wrap prose">
+    <h1>Image credits</h1>
+    <p>The photos on this site are licensed stock and Creative Commons images. They illustrate roofs and places in general; none of them shows work by any roofer we connect callers with.</p>
+    <div class="table-scroll"><table>
+      <thead><tr><th>Photo</th><th>Author</th><th>Source</th><th>License</th></tr></thead>
+      <tbody>{IMAGE_CREDITS.map((c) => (
+        <tr>
+          <td>{c.title}</td>
+          <td>{c.authorUrl ? <a href={c.authorUrl} rel="nofollow noopener">{c.author}</a> : c.author}</td>
+          <td><a href={c.page} rel="nofollow noopener">{c.source}</a></td>
+          <td>{c.licenseUrl ? <a href={c.licenseUrl} rel="nofollow noopener">{c.license}</a> : c.license}</td>
+        </tr>
+      ))}</tbody>
+    </table></div>
+    <p class="small muted">Images were resized and converted to modern formats; no other changes. Creative Commons BY-SA images remain under their license.</p>
+  </div></section>
+</Base>

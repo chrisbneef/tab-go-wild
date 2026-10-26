@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
-import QuoteForm from '../../components/QuoteForm.astro';
+import CallPanel from '../../components/CallPanel.astro';
+import CallButton from '../../components/CallButton.astro';
 import SourceList from '../../components/SourceList.astro';
 import { STORM_STEPS } from '../../data/checklist.js';
 import { articleSchema } from '../../lib/schema.js';
@@ -15,12 +16,11 @@ const extra = [
   { name: 'Oregon CCB license search', url: 'https://search.ccb.state.or.us/search/', basis: 'page' },
 ];
 ---
-<Base title={title} description={desc} crumbs={crumbs} ogImage="/og/storm.png" schema={[articleSchema({ headline: title, description: desc, url }), howto]}>
+<Base title={title} description={desc} crumbs={crumbs} ogImage="/og/storm.jpg" schema={[articleSchema({ headline: title, description: desc, url }), howto]}>
   <div class="page-head"><div class="wrap">
-    <p class="eyebrow">Checklist</p>
     <h1>Roof leaking or storm-damaged? Do this first.</h1>
     <p class="lead" style="max-width:62ch">Six steps for the first hours. Print it and stick it inside a cupboard before the next storm.</p>
-    <div class="btn-row"><a class="btn btn-primary" href="#quote">Request a roofer</a><a class="btn btn-ghost" href="/downloads/storm-leak-checklist.pdf" download>Printable PDF</a></div>
+    <div class="btn-row"><CallButton label="Call" /><a class="btn btn-ghost" href="/downloads/storm-leak-checklist.pdf" download>Printable PDF</a></div>
   </div></div>
   <section style="padding-top:20px"><div class="wrap layout-2">
     <article class="prose">
@@ -31,9 +31,9 @@ const extra = [
         </>
       ))}
       <div class="callout warn"><strong>Storm chasers:</strong> after big storms, out-of-area crews go door to door. Oregon's CCB warns that scam artists target storm victims. Check the license, get it in writing, and call your insurer before you hire.</div>
-      <p><a href="/services/emergency-leak-storm-repair/">More on emergency leak and storm repair →</a></p>
+      <p><a href="/services/emergency-leak-storm-repair/">More on emergency leak and storm repair</a></p>
       <SourceList extra={extra} />
     </article>
-    <aside class="sticky-side"><QuoteForm heading="Need a roofer now?" defaultService="Leak & Storm Emergency Repair" source="storm-checklist" /></aside>
+    <aside class="sticky-side"><CallPanel heading="Need a roofer now?" context="the leak or storm damage" /></aside>
   </div></section>
 </Base>

@@ -1,0 +1,18 @@
+---
+import Icon from './Icon.astro';
+import { activePhone, telHref, smsHref, isPlaceholderPhone, isRented, RENTER } from '../config/site.js';
+const { heading = 'Talk to a local roofer', context = '' } = Astro.props;
+const phone = activePhone();
+const sms = smsHref();
+---
+<div class="call-panel" id="call">
+  <h2>{heading}</h2>
+  <p>{isRented()
+    ? `Call ${RENTER.businessName} (Oregon CCB #${RENTER.ccbNumber}) about ${context || 'your roof'}. If we miss you, leave a message and we'll get back to you.`
+    : `Call to talk with a local, CCB-licensed roofer about ${context || 'your roof'}. If we miss you, leave a message and we'll get back to you.`}</p>
+  <a class="big-num" href={telHref()} data-call>{phone.display}</a>
+  <a class="btn btn-call btn-lg" href={telHref()} data-call><Icon name="phone" />Call now</a>
+  {sms && <p class="fine"><a class="alt" href={sms}>Or send a text</a></p>}
+  <p class="fine">Free to call. No obligation. Leave your name, number and what's going on with the roof.</p>
+  {isPlaceholderPhone() && <span class="placeholder-note">Placeholder number: swap in the tracking number in src/config/site.js</span>}
+</div>

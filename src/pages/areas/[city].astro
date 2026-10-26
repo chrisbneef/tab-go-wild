@@ -1,6 +1,9 @@
 ---
 import Base from '../../layouts/Base.astro';
-import QuoteForm from '../../components/QuoteForm.astro';
+import CallPanel from '../../components/CallPanel.astro';
+import CallButton from '../../components/CallButton.astro';
+import Photo from '../../components/Photo.astro';
+import ServiceGrid from '../../components/ServiceGrid.astro';
 import CtaBand from '../../components/CtaBand.astro';
 import Icon from '../../components/Icon.astro';
 import { CITIES, cityBySlug } from '../../data/cities.js';
@@ -15,24 +18,26 @@ const nearby = c.nearby.map(cityBySlug);
 const fmt = (n) => '$' + Math.round(n / 1000).toLocaleString() + 'k';
 ---
 <Base title={`Roofing in ${c.name}, OR: Replacement, Repair & Moss Removal`} description={c.metaDescription} crumbs={crumbs}
-  ogImage={`/og/${c.slug}.png`}
+  ogImage={`/og/${c.slug}.jpg`}
   schema={[serviceSchema({ name: `Roofing services in ${c.name}, Oregon`, description: c.metaDescription, url, cityName: c.name }), faqSchema(c.faqs)]}>
-  <div class="page-head"><div class="wrap">
-    <p class="eyebrow">{c.name}, Oregon</p>
-    <h1>{c.headline}</h1>
-    <p class="lead" style="max-width:62ch">{c.intro[0]}</p>
-    <div class="btn-row"><a class="btn btn-primary" href="#quote">Get a free {c.name} quote</a><a class="btn btn-ghost" href={`/roof-replacement-cost/${c.slug}/`}>Roof cost in {c.name}</a></div>
+  <div class="page-head with-photo"><div class="wrap">
+    <div>
+      <h1>{c.headline}</h1>
+      <p class="lead">{c.intro[0]}</p>
+      <div class="btn-row"><CallButton label="Call" /><a class="btn btn-ghost" href={`/roof-replacement-cost/${c.slug}/`}>Roof cost in {c.name}</a></div>
+      <ul class="facts">
+        <li>Median home built <b>{c.census.medianYearBuilt}</b></li>
+        <li><b>{c.census.ownerShare}%</b> owner-occupied</li>
+        <li>Median value <b>{fmt(c.census.medianValue)}</b></li>
+        <li><b>{c.census.population.toLocaleString()}</b> residents</li>
+      </ul>
+      <p class="small muted" style="margin-top:8px">U.S. Census Bureau, ACS 2020–2024 5-year estimates, via <a href={c.census.profile} rel="nofollow noopener" target="_blank">Census Reporter</a>.</p>
+    </div>
+    <div class="head-photo"><Photo slot={c.slug} eager sizes="(min-width:960px) 45vw, 100vw" widths={[480, 800, 1100]} /></div>
   </div></div>
 
-  <section style="padding-top:20px"><div class="wrap layout-2">
+  <section style="padding-top:0"><div class="wrap layout-2">
     <article class="prose">
-      <div class="kpis">
-        <div class="kpi"><b>{c.census.medianYearBuilt}</b><span>median year homes were built</span></div>
-        <div class="kpi"><b>{c.census.ownerShare}%</b><span>owner-occupied homes</span></div>
-        <div class="kpi"><b>{fmt(c.census.medianValue)}</b><span>median home value</span></div>
-        <div class="kpi"><b>{c.census.population.toLocaleString()}</b><span>residents</span></div>
-      </div>
-      <p class="small muted" style="margin-top:8px">U.S. Census Bureau, American Community Survey 2020–2024 5-year estimates, via <a href={c.census.profile} rel="nofollow noopener" target="_blank">Census Reporter</a>.</p>
 
       <p>{c.intro[1]}</p>
       <h2>{c.name}'s homes and roofs</h2>
@@ -43,7 +48,7 @@ const fmt = (n) => '$' + Math.round(n / 1000).toLocaleString() + 'k';
 
       <h2>Permits in {c.name}</h2>
       <div class="callout">
-        <p style="margin-bottom:.5em"><strong>{c.permit.office}</strong>{c.permit.phone && <> · <a href={`tel:+1${c.permit.phone.replace(/\D/g, '')}`}>{c.permit.phone}</a></>} · <a href={c.permit.url} rel="nofollow noopener" target="_blank">building permits page</a></p>
+        <p style="margin-bottom:.5em"><strong>{c.permit.office}</strong>{c.permit.phone && <>, <a href={`tel:+1${c.permit.phone.replace(/\D/g, '')}`}>{c.permit.phone}</a></>}. <a href={c.permit.url} rel="nofollow noopener" target="_blank">building permits page</a></p>
         <p style="margin:0">{c.permit.note}</p>
       </div>
 
@@ -51,14 +56,7 @@ const fmt = (n) => '$' + Math.round(n / 1000).toLocaleString() + 'k';
       <ul>{c.localTips.map((t) => <li>{t}</li>)}</ul>
 
       <h2>Roofing services in {c.name}</h2>
-      <div class="grid g2">
-        {SERVICES.map((s) => (
-          <a class="card" id={s.slug} href={`/services/${s.slug}/`}>
-            <h3 style="font-size:1.05rem">{s.name} in {c.name}</h3>
-            <p class="muted small">{s.short}</p>
-          </a>
-        ))}
-      </div>
+      <ServiceGrid city={c.name} two={false} />
 
       {c.neighborhoods.length > 0 && (
         <>
@@ -77,7 +75,7 @@ const fmt = (n) => '$' + Math.round(n / 1000).toLocaleString() + 'k';
         <li><a href="/areas/">All service areas</a></li>
       </ul>
     </article>
-    <aside class="sticky-side"><QuoteForm defaultCity={c.name} heading={`Free roof quote in ${c.name}`} source={`city:${c.slug}`} /></aside>
+    <aside class="sticky-side"><CallPanel heading={`Talk to a roofer in ${c.name}`} context={`your ${c.name} roof`} /></aside>
   </div></section>
   <CtaBand title={`Get your ${c.name} roof sorted before the next storm`} />
 </Base>

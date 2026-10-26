@@ -1,4 +1,4 @@
-import { SITE, RENTER, isRented, brandName, activePhone, canCall } from '../config/site.js';
+import { SITE, RENTER, isRented, brandName, activePhone, isPlaceholderPhone } from '../config/site.js';
 import { CITIES } from '../data/cities.js';
 
 export const abs = (path = '/') => new URL(path, SITE.url).toString();
@@ -24,7 +24,7 @@ export function orgSchema() {
       url: SITE.url,
       areaServed: areaServed(),
       identifier: { '@type': 'PropertyValue', propertyID: 'Oregon CCB license', value: RENTER.ccbNumber },
-      ...(canCall() ? { telephone: phone.e164 } : {}),
+      ...(!isPlaceholderPhone() ? { telephone: phone.e164 } : {}),
       ...(RENTER.googleBusinessProfileUrl || RENTER.website
         ? { sameAs: [RENTER.googleBusinessProfileUrl, RENTER.website, ...sameAs].filter(Boolean) }
         : sameAs.length ? { sameAs } : {}),
@@ -47,7 +47,7 @@ export function orgSchema() {
     description: 'A local roofing resource for Lake Oswego, West Linn, Oregon City, Gladstone and Milwaukie, Oregon. Free guides and cost information, and a request service that connects homeowners with a CCB-licensed local roofer. Not a roofing contractor.',
     areaServed: areaServed(),
     knowsAbout: ['Roof replacement', 'Roof repair', 'Roof moss removal', 'Gutters', 'Skylights', 'Oregon roofing permits', 'Oregon CCB licensing'],
-    ...(canCall() ? { telephone: phone.e164 } : {}),
+    ...(!isPlaceholderPhone() ? { telephone: phone.e164 } : {}),
     ...(sameAs.length ? { sameAs } : {}),
   };
 }

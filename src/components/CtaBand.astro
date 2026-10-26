@@ -1,15 +1,21 @@
 ---
-import { activePhone, canCall } from '../config/site.js';
-const { title = 'Ready for a roof you don\'t have to worry about?', text = 'Tell us about your roof in two minutes. A licensed local roofer takes it from there.' } = Astro.props;
+import CallButton from './CallButton.astro';
+import { activePhone, telHref } from '../config/site.js';
+const { title = 'Get your roof sorted before the next storm.', text = "Call to talk with a local, CCB-licensed roofer. If we miss you, leave a message and we'll get back to you." } = Astro.props;
 const phone = activePhone();
 ---
-<section class="section-green">
-  <div class="wrap center">
-    <h2>{title}</h2>
-    <p style="max-width:56ch;margin:0 auto 1.4em">{text}</p>
-    <div class="btn-row" style="justify-content:center">
-      <a class="btn btn-primary" href="/get-a-quote/">Get my free quote</a>
-      {canCall() ? <a class="btn btn-light" href={`tel:${phone.e164}`}>Call {phone.display}</a> : <a class="btn btn-light" href="/roof-cost-estimator/">Estimate my cost</a>}
+<section class="cta-band">
+  <div class="wrap">
+    <div>
+      <h2>{title}</h2>
+      <p>{text}</p>
+    </div>
+    <div class="right">
+      <a class="num" href={telHref()} data-call>{phone.display}</a>
+      <div class="btn-row">
+        <CallButton label="Call now" showNumber={false} size="lg" />
+        <a class="btn btn-on-dark btn-lg" href="/roof-cost-estimator/">Estimate my cost</a>
+      </div>
     </div>
   </div>
 </section>

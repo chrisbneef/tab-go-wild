@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import LicenseLine from '../components/LicenseLine.astro';
-import { SITE, brandName } from '../config/site.js';
+import { SITE, brandName, activePhone, telHref } from '../config/site.js';
 const crumbs = [{ name: 'Home', url: '/' }, { name: 'Terms', url: '/terms/' }];
 ---
 <Base title="Terms of Use" description={`Terms of use for ${brandName()}.`} crumbs={crumbs}>
@@ -18,6 +18,6 @@ const crumbs = [{ name: 'Home', url: '/' }, { name: 'Terms', url: '/terms/' }];
     <h2>Links</h2>
     <p>We link to outside sources so you can check our numbers. We're not responsible for their content.</p>
     <h2>Contact</h2>
-    <p><a href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
+    <p>{SITE.email ? <a href={`mailto:${SITE.email}`}>{SITE.email}</a> : <a href={telHref()}>{activePhone().display}</a>}</p>
   </div></section>
 </Base>

@@ -7,7 +7,7 @@ export function GET() {
   const u = (p) => SITE.url + p;
   const who = isRented()
     ? `${RENTER.businessName} is an Oregon CCB-licensed roofing contractor (CCB #${RENTER.ccbNumber}) serving Portland's south metro.`
-    : `${SITE.name} is a local roofing information site and request service for Portland's south metro (Oregon). It is NOT a roofing contractor. Quote requests are passed to an independent roofer with an active Oregon CCB license, who identifies themselves (name and CCB #) before any work is agreed.`;
+    : `${SITE.name} is a local roofing information site and request service for Portland's south metro (Oregon). It is NOT a roofing contractor. Callers are connected with an independent roofer with an active Oregon CCB license, who identifies themselves (name and CCB #) before any work is agreed.`;
   const lines = [
     `# ${brandName()}`,
     '',
@@ -17,7 +17,7 @@ export function GET() {
     `- [Roof replacement cost guide](${u('/roof-replacement-cost/')}): published Portland-area and Oregon cost ranges with sources`,
     `- [Roof cost estimator](${u('/roof-cost-estimator/')}): range from home size, pitch and material`,
     `- [Roofing FAQ](${u('/faq/')})`,
-    `- [How it works](${u('/how-it-works/')}): who runs the site and how requests reach a licensed roofer`,
+    `- [How it works](${u('/how-it-works/')}): who runs the site and how a call reaches a licensed roofer`,
     `- [Storm & leak first-steps checklist](${u('/resources/storm-leak-checklist/')})`,
     `- [Oregon roof replacement guide (PDF)](${u('/downloads/oregon-roof-replacement-guide.pdf')})`,
     '',

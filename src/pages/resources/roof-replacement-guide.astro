@@ -1,18 +1,18 @@
 ---
 import Base from '../../layouts/Base.astro';
-import QuoteForm from '../../components/QuoteForm.astro';
+import CallPanel from '../../components/CallPanel.astro';
+import CallButton from '../../components/CallButton.astro';
 import { articleSchema } from '../../lib/schema.js';
 const url = '/resources/roof-replacement-guide/';
 const title = "Oregon Homeowner's Roof Replacement Guide & Checklist (Free PDF)";
 const desc = 'A free, printable guide for Oregon homeowners planning a new roof: signs it\'s time, materials for our rain and moss, vetting a CCB-licensed roofer, reading bids, permits, insurance and a checklist.';
 const crumbs = [{ name: 'Home', url: '/' }, { name: 'Guides & tools', url: '/resources/' }, { name: 'Roof replacement guide', url }];
 ---
-<Base title={title} description={desc} crumbs={crumbs} ogImage="/og/guide.png" schema={[articleSchema({ headline: title, description: desc, url })]}>
+<Base title={title} description={desc} crumbs={crumbs} ogImage="/og/guide.jpg" schema={[articleSchema({ headline: title, description: desc, url })]}>
   <div class="page-head"><div class="wrap">
-    <p class="eyebrow">Free guide · PDF</p>
     <h1>The Oregon Homeowner's Roof Replacement Guide</h1>
     <p class="lead" style="max-width:62ch">Eight printable pages that walk you from "is it time?" to a signed contract you feel good about, written for Willamette Valley weather and Oregon's contractor rules.</p>
-    <div class="btn-row"><a class="btn btn-primary" href="/downloads/oregon-roof-replacement-guide.pdf" download>Download the free PDF</a><a class="btn btn-ghost" href="#quote">Or get a free quote</a></div>
+    <div class="btn-row"><a class="btn btn-primary" href="/downloads/oregon-roof-replacement-guide.pdf" download>Download the free PDF</a><CallButton label="Call a roofer" showNumber={false} variant="ghost" /></div>
   </div></div>
   <section style="padding-top:20px"><div class="wrap layout-2">
     <article class="prose">
@@ -27,7 +27,7 @@ const crumbs = [{ name: 'Home', url: '/' }, { name: 'Guides & tools', url: '/res
         <li><strong>Insurance and storms.</strong> What policies usually cover and how to document damage.</li>
         <li><strong>After the roof.</strong> Moss care, gutters and a yearly maintenance checklist.</li>
       </ol>
-      <p>No email needed. Print it, mark it up, and bring it to your bid appointments.</p>
+      <p>No email needed: it's a direct download. Print it, mark it up, and bring it to your bid appointments.</p>
       <p><a class="btn btn-primary" href="/downloads/oregon-roof-replacement-guide.pdf" download>Download the guide (PDF)</a></p>
       <h2>Quick version: 5 things to do before you sign</h2>
       <ol>
@@ -38,6 +38,6 @@ const crumbs = [{ name: 'Home', url: '/' }, { name: 'Guides & tools', url: '/res
         <li>Never pay in full up front. Oregon requires a written contract for jobs over $2,000.</li>
       </ol>
     </article>
-    <aside class="sticky-side"><QuoteForm defaultService="Roof Replacement" source="guide" /></aside>
+    <aside class="sticky-side"><CallPanel context="replacing your roof" /></aside>
   </div></section>
 </Base>

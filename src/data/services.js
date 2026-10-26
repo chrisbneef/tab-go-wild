@@ -77,7 +77,7 @@ export const SERVICES = [
     title: 'Emergency Roof Leak & Storm Damage Repair | South Metro Portland',
     metaDescription: 'Roof leaking now, or a tree or windstorm damaged it? First steps to protect your home, how emergency tarping works, insurance tips, and how to reach a licensed local roofer.',
     h1: 'Roof leaking right now? Start here.',
-    intro: 'Water coming through the ceiling is stressful. The first hour is about safety and limiting damage, not fixing the roof. Use the steps below, then request a roofer for tarping or a temporary repair.',
+    intro: 'Water coming through the ceiling is stressful. The first hour is about safety and limiting damage, not fixing the roof. Use the steps below, then call for a roofer for tarping or a temporary repair.',
     signs: [
       'Water dripping through a ceiling or light fixture',
       'A tree or large limb on the roof',

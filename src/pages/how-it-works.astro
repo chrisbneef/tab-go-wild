@@ -2,13 +2,12 @@
 import Base from '../layouts/Base.astro';
 import CtaBand from '../components/CtaBand.astro';
 import LicenseLine from '../components/LicenseLine.astro';
-import { SITE, RENTER, isRented } from '../config/site.js';
+import { SITE, RENTER, isRented, activePhone, telHref } from '../config/site.js';
 const crumbs = [{ name: 'Home', url: '/' }, { name: 'How it works', url: '/how-it-works/' }];
 const rented = isRented();
 ---
-<Base title={rented ? `About ${RENTER.businessName}` : `How ${SITE.name} Works`} description={rented ? `About ${RENTER.businessName}, Oregon CCB #${RENTER.ccbNumber}, serving Lake Oswego, West Linn, Oregon City, Gladstone and Milwaukie.` : `${SITE.name} is a local roofing resource for Portland's south metro. Here's exactly who we are, what we do, and how quote requests reach a CCB-licensed roofer.`} crumbs={crumbs}>
+<Base title={rented ? `About ${RENTER.businessName}` : `How ${SITE.name} Works`} description={rented ? `About ${RENTER.businessName}, Oregon CCB #${RENTER.ccbNumber}, serving Lake Oswego, West Linn, Oregon City, Gladstone and Milwaukie.` : `${SITE.name} is a local roofing resource for Portland's south metro. Here's exactly who we are, what we do, and how a call reaches a CCB-licensed roofer.`} crumbs={crumbs}>
   <div class="page-head"><div class="wrap">
-    <p class="eyebrow">{rented ? 'About us' : 'How it works'}</p>
     <h1>{rented ? `About ${RENTER.businessName}` : 'Who we are, and how this works'}</h1>
   </div></div>
   <section style="padding-top:10px"><div class="wrap prose">
@@ -24,12 +23,12 @@ const rented = isRented();
         <ul>
           <li>Publish practical, sourced information about roofs in Lake Oswego, West Linn, Oregon City, Gladstone and Milwaukie: costs, permits, materials, moss and storms.</li>
           <li>Offer free tools: a cost estimator, a roof replacement guide and a storm checklist.</li>
-          <li>When you ask for a quote, pass your request to one independent roofing company that holds an active Oregon CCB license and serves your area.</li>
+          <li>Answer one phone number. When you call about your roof, we connect you with one independent roofing company that holds an active Oregon CCB license and serves your area.</li>
         </ul>
-        <h2>What happens when you request a quote</h2>
+        <h2>What happens when you call</h2>
         <ol>
-          <li>You fill out the form (or call). We collect only what a roofer needs to contact you.</li>
-          <li>We pass it to an independent, CCB-licensed roofer serving your city. They contact you directly.</li>
+          <li>You call the number on this site. If we miss you, leave a message with your name, number and what's going on, and we'll get back to you. We don't use web forms and don't collect email addresses.</li>
+          <li>We connect you with an independent, CCB-licensed roofer serving your city, who talks with you directly.</li>
           <li>Before any work is agreed, they give you their business name and CCB number. Check it at <a href="https://search.ccb.state.or.us/search/" rel="noopener">search.ccb.state.or.us</a>.</li>
           <li>Any contract, price, warranty and work is between you and that roofer. You're never obligated to hire them.</li>
         </ol>
@@ -41,7 +40,7 @@ const rented = isRented();
     )}
     <div class="callout"><LicenseLine /></div>
     <h2>Questions or corrections?</h2>
-    <p>Email <a href={`mailto:${SITE.email}`}>{SITE.email}</a>. If you spot something out of date (a permit rule, a cost source), tell us and we'll fix it.</p>
+    <p>{SITE.email ? <>Email <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.</> : <>Call <a href={telHref()}>{activePhone().display}</a> and leave a message.</>} If you spot something out of date (a permit rule, a cost source), tell us and we'll fix it.</p>
   </div></section>
   <CtaBand />
 </Base>

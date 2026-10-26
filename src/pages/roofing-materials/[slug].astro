@@ -1,7 +1,10 @@
 ---
 import Base from '../../layouts/Base.astro';
-import QuoteForm from '../../components/QuoteForm.astro';
+import CallPanel from '../../components/CallPanel.astro';
+import CallButton from '../../components/CallButton.astro';
 import SourceList from '../../components/SourceList.astro';
+import Photo from '../../components/Photo.astro';
+import { SERVICE_PHOTO } from '../../data/photos.js';
 import { MATERIALS } from '../../data/services.js';
 import { MATERIAL_RATES } from '../../data/costs.js';
 import { articleSchema } from '../../lib/schema.js';
@@ -17,27 +20,30 @@ const sqft2000 = 2000 / 2 * 1.25;
 ---
 <Base title={title} description={desc} crumbs={crumbs} schema={[articleSchema({ headline: title, description: desc, url })]}>
   <div class="page-head"><div class="wrap">
-    <p class="eyebrow">Roofing materials</p>
     <h1>{m.name}</h1>
-    <p class="lead" style="max-width:62ch">{m.short}</p>
+    <p class="lead">{m.short}</p>
+    <div class="btn-row"><CallButton label="Call" /><a class="btn btn-ghost" href="/roof-cost-estimator/">Estimate my cost</a></div>
   </div></div>
-  <section style="padding-top:20px"><div class="wrap layout-2">
+  <section style="padding-top:0"><div class="wrap layout-2">
     <article class="prose">
-      <div class="kpis">
-        <div class="kpi"><b>${r.low} – ${r.high}</b><span>per sq ft installed (published)</span></div>
-        <div class="kpi"><b>${Math.round(sqft2000 * r.low / 100) * 100 / 1000}k – ${Math.round(sqft2000 * r.high / 100) * 100 / 1000}k</b><span>example: 2,000 sq ft two-story home*</span></div>
-      </div>
+      <figure class="figure"><Photo slot={SERVICE_PHOTO[m.slug]} sizes="(min-width:1000px) 640px, 100vw" widths={[480, 800, 1200]} /></figure>
+      <div class="table-scroll"><table>
+        <tbody>
+          <tr><th scope="row">Installed cost (published)</th><td>${r.low}–${r.high} per sq ft</td></tr>
+          <tr><th scope="row">Example: 2,000 sq ft two-story home*</th><td>${Math.round(sqft2000 * r.low / 100) * 100 / 1000}k–${Math.round(sqft2000 * r.high / 100) * 100 / 1000}k</td></tr>
+        </tbody>
+      </table></div>
       <p class="small muted" style="margin-top:8px">*About {Math.round(sqft2000).toLocaleString()} sq ft of roof (1,000 sq ft footprint × 1.25 for a medium pitch and overhangs). {r.note}</p>
       <h2>How long it lasts</h2>
       <p>{m.lifespan}</p>
       <h2>Pros</h2><ul>{m.pros.map((x) => <li>{x}</li>)}</ul>
       <h2>Cons</h2><ul>{m.cons.map((x) => <li>{x}</li>)}</ul>
       <h2>Best for</h2><p>{m.bestFor}</p>
-      <p><a href="/roof-cost-estimator/">Estimate a {m.name.toLowerCase()} roof for your home →</a></p>
+      <p><a href="/roof-cost-estimator/">Estimate a {m.name.toLowerCase()} roof for your home</a></p>
       <h2>Compare other materials</h2>
       <ul class="pill-list">{others.map((o) => <li><a href={`/roofing-materials/${o.slug}/`}>{o.name}</a></li>)}</ul>
       <SourceList keys={r.srcs} />
     </article>
-    <aside class="sticky-side"><QuoteForm defaultService="Roof Replacement" source={`material:${m.slug}`} /></aside>
+    <aside class="sticky-side"><CallPanel context={`a ${m.name.toLowerCase()} roof`} /></aside>
   </div></section>
 </Base>
