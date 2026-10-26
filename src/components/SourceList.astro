@@ -1,0 +1,14 @@
+---
+import { SOURCES } from '../data/costs.js';
+const { keys = [], extra = [] } = Astro.props;
+const uniq = [...new Set(keys)].map((k) => SOURCES[k]).filter(Boolean);
+const all = [...uniq, ...extra];
+---
+{all.length > 0 && (
+  <div class="sources">
+    <strong>Sources</strong> (checked Oct 26, 2026; figures are published estimates, not quotes):
+    <ol>
+      {all.map((s) => <li><a href={s.url} rel="nofollow noopener" target="_blank">{s.name}</a>{s.basis === 'snippet' ? ' (figure from the publisher\'s search listing)' : s.basis === 'secondary' ? ' (secondary quote)' : ''}</li>)}
+    </ol>
+  </div>
+)}

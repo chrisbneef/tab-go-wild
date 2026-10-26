@@ -1,0 +1,70 @@
+---
+import Base from '../../layouts/Base.astro';
+import QuoteForm from '../../components/QuoteForm.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import SourceList from '../../components/SourceList.astro';
+import Icon from '../../components/Icon.astro';
+import { SERVICES, serviceBySlug } from '../../data/services.js';
+import { CITIES } from '../../data/cities.js';
+import { costsForService } from '../../data/costs.js';
+import { serviceSchema, faqSchema } from '../../lib/schema.js';
+
+export function getStaticPaths() {
+  return SERVICES.map((s) => ({ params: { slug: s.slug } }));
+}
+const s = serviceBySlug(Astro.params.slug);
+const url = `/services/${s.slug}/`;
+const costs = costsForService(s.slug);
+const related = s.related.map(serviceBySlug).filter(Boolean);
+const crumbs = [{ name: 'Home', url: '/' }, { name: 'Services', url: '/services/' }, { name: s.name, url }];
+---
+<Base title={s.title} description={s.metaDescription} crumbs={crumbs}
+  schema={[serviceSchema({ name: s.name, description: s.metaDescription, url }), faqSchema(s.faqs)]}>
+  <div class="page-head"><div class="wrap">
+    <p class="eyebrow">{s.name} · Portland south metro</p>
+    <h1>{s.h1}</h1>
+    <p class="lead" style="max-width:62ch">{s.intro}</p>
+    <div class="btn-row"><a class="btn btn-primary" href="#quote">Get a free quote</a>{s.checklistLink && <a class="btn btn-ghost" href="/resources/storm-leak-checklist/">Leak first-steps checklist</a>}</div>
+  </div></div>
+
+  <section style="padding-top:20px">
+    <div class="wrap layout-2">
+      <article class="prose">
+        <h2>Signs you need {s.name.toLowerCase()}</h2>
+        <ul>{s.signs.map((x) => <li>{x}</li>)}</ul>
+
+        <h2>{s.slug === 'emergency-leak-storm-repair' ? 'What to do, step by step' : 'How the job works'}</h2>
+        <ol>{s.process.map(([h, p]) => <li><strong>{h}.</strong> {p}</li>)}</ol>
+
+        <h2>What affects the price</h2>
+        <ul>{s.factors.map((x) => <li>{x}</li>)}</ul>
+
+        {costs.length > 0 && (
+          <>
+            <h3>Published cost ranges (estimates)</h3>
+            <div class="table-scroll"><table>
+              <thead><tr><th>Item</th><th>Published range</th></tr></thead>
+              <tbody>{costs.map((c) => <tr><td>{c.item}</td><td>{c.value}</td></tr>)}</tbody>
+            </table></div>
+            <p class="small muted">These are third-party published figures, not quotes. Your roofer's written bid after an inspection is the real number. {s.slug === 'roof-replacement' && <a href="/roof-replacement-cost/">See the full cost guide</a>}</p>
+          </>
+        )}
+
+        <div class="callout"><strong>The Oregon angle.</strong> {s.oregon}</div>
+
+        <h2>{s.name} by city</h2>
+        <ul class="pill-list">{CITIES.map((c) => <li><a href={`/areas/${c.slug}/`}>{s.name} in {c.name}</a></li>)}</ul>
+
+        <h2>Questions about {s.name.toLowerCase()}</h2>
+        {s.faqs.map((f) => <details><summary>{f.q}</summary><div class="a">{f.a}</div></details>)}
+
+        <h2>Related services</h2>
+        <ul class="pill-list">{related.map((r) => <li><a href={`/services/${r.slug}/`}>{r.name}</a></li>)}</ul>
+
+        <SourceList keys={costs.map((c) => c.src)} extra={s.extraSources || []} />
+      </article>
+      <aside class="sticky-side"><QuoteForm defaultService={s.name} source={`service:${s.slug}`} /></aside>
+    </div>
+  </section>
+  <CtaBand />
+</Base>

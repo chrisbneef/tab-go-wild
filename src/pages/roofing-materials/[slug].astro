@@ -1,0 +1,43 @@
+---
+import Base from '../../layouts/Base.astro';
+import QuoteForm from '../../components/QuoteForm.astro';
+import SourceList from '../../components/SourceList.astro';
+import { MATERIALS } from '../../data/services.js';
+import { MATERIAL_RATES } from '../../data/costs.js';
+import { articleSchema } from '../../lib/schema.js';
+export function getStaticPaths() { return MATERIALS.map((m) => ({ params: { slug: m.slug } })); }
+const m = MATERIALS.find((x) => x.slug === Astro.params.slug);
+const r = MATERIAL_RATES[m.costKey];
+const url = `/roofing-materials/${m.slug}/`;
+const crumbs = [{ name: 'Home', url: '/' }, { name: 'Roofing materials', url: '/roofing-materials/' }, { name: m.name, url }];
+const title = `${m.name} Roofs in Oregon: Cost, Lifespan, Pros & Cons`;
+const desc = `${m.name} for south metro Portland homes: published installed cost ($${r.low}–$${r.high} per sq ft), lifespan, pros and cons in Oregon's rain and moss, and who it's best for.`;
+const others = MATERIALS.filter((x) => x.slug !== m.slug);
+const sqft2000 = 2000 / 2 * 1.25;
+---
+<Base title={title} description={desc} crumbs={crumbs} schema={[articleSchema({ headline: title, description: desc, url })]}>
+  <div class="page-head"><div class="wrap">
+    <p class="eyebrow">Roofing materials</p>
+    <h1>{m.name}</h1>
+    <p class="lead" style="max-width:62ch">{m.short}</p>
+  </div></div>
+  <section style="padding-top:20px"><div class="wrap layout-2">
+    <article class="prose">
+      <div class="kpis">
+        <div class="kpi"><b>${r.low} – ${r.high}</b><span>per sq ft installed (published)</span></div>
+        <div class="kpi"><b>${Math.round(sqft2000 * r.low / 100) * 100 / 1000}k – ${Math.round(sqft2000 * r.high / 100) * 100 / 1000}k</b><span>example: 2,000 sq ft two-story home*</span></div>
+      </div>
+      <p class="small muted" style="margin-top:8px">*About {Math.round(sqft2000).toLocaleString()} sq ft of roof (1,000 sq ft footprint × 1.25 for a medium pitch and overhangs). {r.note}</p>
+      <h2>How long it lasts</h2>
+      <p>{m.lifespan}</p>
+      <h2>Pros</h2><ul>{m.pros.map((x) => <li>{x}</li>)}</ul>
+      <h2>Cons</h2><ul>{m.cons.map((x) => <li>{x}</li>)}</ul>
+      <h2>Best for</h2><p>{m.bestFor}</p>
+      <p><a href="/roof-cost-estimator/">Estimate a {m.name.toLowerCase()} roof for your home →</a></p>
+      <h2>Compare other materials</h2>
+      <ul class="pill-list">{others.map((o) => <li><a href={`/roofing-materials/${o.slug}/`}>{o.name}</a></li>)}</ul>
+      <SourceList keys={r.srcs} />
+    </article>
+    <aside class="sticky-side"><QuoteForm defaultService="Roof Replacement" source={`material:${m.slug}`} /></aside>
+  </div></section>
+</Base>

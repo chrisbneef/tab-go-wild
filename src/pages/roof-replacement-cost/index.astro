@@ -1,0 +1,72 @@
+---
+import Base from '../../layouts/Base.astro';
+import QuoteForm from '../../components/QuoteForm.astro';
+import SourceList from '../../components/SourceList.astro';
+import EstimateTable from '../../components/EstimateTable.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { REPLACEMENT_FIGURES, OTHER_COSTS, MATERIAL_RATES } from '../../data/costs.js';
+import { CITIES } from '../../data/cities.js';
+import { articleSchema, faqSchema } from '../../lib/schema.js';
+const url = '/roof-replacement-cost/';
+const title = 'Roof Replacement Cost in Oregon & Portland (2026): Sourced Ranges';
+const desc = 'What a new roof costs in the Portland area in 2026: published ranges from Oregon and Portland sources, cost per square foot by material, repair and gutter costs, and what drives the price.';
+const crumbs = [{ name: 'Home', url: '/' }, { name: 'Roof replacement cost', url }];
+const faqs = [
+  { q: 'How much does a new roof cost in Portland, Oregon in 2026?', a: 'Published figures for typical Portland-area homes range from about $8,000 to $24,000 (Interstate Roofing) and $12,000 to $30,000+ (Jobin Roofing, which says most local homes land at $14,000–$20,000). Larger and steeper roofs, and metal or cedar, cost more.' },
+  { q: 'How much is a roof per square foot in Oregon?', a: 'Published installed costs run roughly $4.50–$9 per square foot of roof for architectural asphalt, $9–$16 for standing-seam metal, $12–$20 for synthetic shake and $25–$30 for real cedar shake.' },
+  { q: 'Does a new roof add value to my home?', a: 'The 2025 Cost vs. Value report estimates an asphalt roof replacement recoups about 67.5% of its cost at resale nationally. A new roof also helps a home pass inspection and sell faster.' },
+];
+const allKeys = [...REPLACEMENT_FIGURES.map((f) => f.src), ...Object.values(MATERIAL_RATES).flatMap((r) => r.srcs), ...OTHER_COSTS.map((c) => c.src)];
+---
+<Base title={title} description={desc} crumbs={crumbs} ogImage="/og/costs.png" schema={[articleSchema({ headline: title, description: desc, url }), faqSchema(faqs)]}>
+  <div class="page-head"><div class="wrap">
+    <p class="eyebrow">Cost guide · updated October 2026</p>
+    <h1>What does a new roof cost in the Portland area?</h1>
+    <p class="lead" style="max-width:62ch">Short answer: most published figures for typical homes fall between about <strong>$8,000 and $36,000</strong>, depending on size, pitch, tear-off and material. Here's every source we found, side by side.</p>
+  </div></div>
+  <section style="padding-top:20px"><div class="wrap layout-2">
+    <article class="prose">
+      <h2>Published roof replacement figures</h2>
+      <div class="table-scroll"><table>
+        <thead><tr><th>What it measures</th><th>Published figure</th></tr></thead>
+        <tbody>{REPLACEMENT_FIGURES.map((f) => <tr><td>{f.label}</td><td>{f.value}</td></tr>)}</tbody>
+      </table></div>
+      <p class="small muted">Why they differ: some figures are statewide averages including small and simple roofs, others are local roofers' ranges for typical metro homes, and the Cost vs. Value number is a large 3,000 sq ft roof. All are estimates.</p>
+
+      <h2>Cost by material (per square foot of roof)</h2>
+      <div class="table-scroll"><table>
+        <thead><tr><th>Material</th><th>Installed $/sq ft</th><th>Note</th></tr></thead>
+        <tbody>{Object.values(MATERIAL_RATES).map((r) => <tr><td>{r.label}</td><td>${r.low.toFixed(2)} – ${r.high.toFixed(2)}</td><td class="small">{r.note}</td></tr>)}</tbody>
+      </table></div>
+
+      <h2>Example estimates by home size</h2>
+      <EstimateTable />
+      <p><a class="btn btn-primary" href="/roof-cost-estimator/">Estimate your own roof</a></p>
+
+      <h2>Repairs, gutters, moss and more</h2>
+      <div class="table-scroll"><table>
+        <thead><tr><th>Job</th><th>Published range</th></tr></thead>
+        <tbody>{OTHER_COSTS.map((c) => <tr><td>{c.item}</td><td>{c.value}</td></tr>)}</tbody>
+      </table></div>
+
+      <h2>What pushes a bid up (or down)</h2>
+      <ul>
+        <li><strong>Size and pitch.</strong> More roof and steeper slopes mean more material, labor and safety gear.</li>
+        <li><strong>Tear-off.</strong> Each extra layer of old roofing adds labor and dump fees.</li>
+        <li><strong>Decking.</strong> Rotted sheathing is replaced per sheet. Ask for the unit price in writing.</li>
+        <li><strong>Penetrations.</strong> Chimneys, skylights, vents and valleys all need flashing.</li>
+        <li><strong>Material line.</strong> Designer shingles, metal and shake cost more but can last longer.</li>
+        <li><strong>Season and demand.</strong> After big storms, roofers book out and prices can firm up.</li>
+      </ul>
+
+      <h2>Roof replacement cost by city</h2>
+      <ul class="pill-list">{CITIES.map((c) => <li><a href={`/roof-replacement-cost/${c.slug}/`}>Roof cost in {c.name}</a></li>)}</ul>
+
+      <h2>Cost questions</h2>
+      {faqs.map((f) => <details><summary>{f.q}</summary><div class="a">{f.a}</div></details>)}
+      <SourceList keys={allKeys} />
+    </article>
+    <aside class="sticky-side"><QuoteForm heading="Get a real number for your roof" defaultService="Roof Replacement" source="cost-hub" /></aside>
+  </div></section>
+  <CtaBand />
+</Base>

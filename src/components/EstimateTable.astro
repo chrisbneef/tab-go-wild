@@ -1,0 +1,19 @@
+---
+import { MATERIAL_RATES, PITCH } from '../data/costs.js';
+const homes = [
+  { label: '1,500 sq ft single-story', sqft: 1500, stories: 1 },
+  { label: '2,000 sq ft two-story', sqft: 2000, stories: 2 },
+  { label: '3,000 sq ft two-story', sqft: 3000, stories: 2 },
+];
+const mats = ['asphalt', 'metal', 'synthetic', 'cedar'];
+const k = (n) => '$' + (Math.round(n / 500) * 500).toLocaleString();
+const area = (h) => (h.sqft / h.stories) * PITCH.medium.factor;
+---
+<div class="table-scroll"><table>
+  <thead><tr><th>Home (medium pitch)</th>{mats.map((m) => <th>{MATERIAL_RATES[m].label}</th>)}</tr></thead>
+  <tbody>{homes.map((h) => (
+    <tr><td>{h.label}<br /><span class="small muted">≈{Math.round(area(h)).toLocaleString()} sq ft of roof</span></td>
+      {mats.map((m) => <td>{k(area(h) * MATERIAL_RATES[m].low)} – {k(area(h) * MATERIAL_RATES[m].high)}</td>)}</tr>
+  ))}</tbody>
+</table></div>
+<p class="small muted">How we calculated this: roof area = footprint × 1.25 (medium pitch plus overhangs), times the published installed cost per square foot for each material (sources below). Rounded to the nearest $500. Steep roofs, multiple layers, rotted decking, skylights and chimneys push the real number up.</p>

@@ -1,0 +1,46 @@
+---
+import LicenseLine from './LicenseLine.astro';
+import { SITE, brandName, activePhone, canCall } from '../config/site.js';
+import { SERVICES } from '../data/services.js';
+import { CITIES } from '../data/cities.js';
+const phone = activePhone();
+const year = new Date().getFullYear();
+---
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <h3>{brandName()}</h3>
+        <p>Straight answers on roofs in Portland's south metro, and a fast way to get a licensed local roofer out to look at yours.</p>
+        <p>{canCall() ? <a href={`tel:${phone.e164}`}>{phone.display}</a> : <a href="/get-a-quote/">Request a callback</a>}</p>
+      </div>
+      <div>
+        <h3>Services</h3>
+        <ul>{SERVICES.map((s) => <li><a href={`/services/${s.slug}/`}>{s.name}</a></li>)}</ul>
+      </div>
+      <div>
+        <h3>Areas</h3>
+        <ul>{CITIES.map((c) => <li><a href={`/areas/${c.slug}/`}>{c.name}</a></li>)}</ul>
+        <h3 style="margin-top:1.2em">Costs</h3>
+        <ul>{CITIES.slice(0,3).map((c) => <li><a href={`/roof-replacement-cost/${c.slug}/`}>Roof cost in {c.name}</a></li>)}</ul>
+      </div>
+      <div>
+        <h3>Resources</h3>
+        <ul>
+          <li><a href="/roof-cost-estimator/">Roof cost estimator</a></li>
+          <li><a href="/resources/roof-replacement-guide/">Roof replacement guide (PDF)</a></li>
+          <li><a href="/resources/storm-leak-checklist/">Leak &amp; storm checklist</a></li>
+          <li><a href="/roofing-materials/">Roofing materials</a></li>
+          <li><a href="/faq/">FAQ</a></li>
+          <li><a href="/how-it-works/">How it works</a></li>
+          <li><a href="/privacy/">Privacy</a></li>
+          <li><a href="/terms/">Terms</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="legal">
+      <LicenseLine />
+      <p>Cost figures on this site are estimates compiled from the published sources cited on each page; your roofer's written bid is the only real price. © {year} {brandName()}. Updated {SITE.updated}.</p>
+    </div>
+  </div>
+</footer>

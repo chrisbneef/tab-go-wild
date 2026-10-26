@@ -1,0 +1,23 @@
+---
+import Base from '../layouts/Base.astro';
+import LicenseLine from '../components/LicenseLine.astro';
+import { SITE, brandName } from '../config/site.js';
+const crumbs = [{ name: 'Home', url: '/' }, { name: 'Terms', url: '/terms/' }];
+---
+<Base title="Terms of Use" description={`Terms of use for ${brandName()}.`} crumbs={crumbs}>
+  <section><div class="wrap prose">
+    <h1>Terms of use</h1>
+    <p class="muted">Last updated {SITE.updated}</p>
+    <h2>Information only</h2>
+    <p>Content on this site is general information about roofing in Oregon. It isn't professional, legal, insurance or engineering advice. Permit rules, codes and prices change; confirm details with your city, your insurer and a licensed contractor.</p>
+    <h2>Cost figures are estimates</h2>
+    <p>Cost ranges and the estimator use published third-party figures (cited on each page). They're not quotes or offers. Only a written bid from a licensed contractor after inspecting your roof is a price.</p>
+    <h2>Contractors</h2>
+    <LicenseLine />
+    <p>Any agreement for roofing work is between you and the contractor you choose. Check any contractor's license at the Oregon Construction Contractors Board before hiring.</p>
+    <h2>Links</h2>
+    <p>We link to outside sources so you can check our numbers. We're not responsible for their content.</p>
+    <h2>Contact</h2>
+    <p><a href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
+  </div></section>
+</Base>

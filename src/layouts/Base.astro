@@ -1,0 +1,53 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import MobileCta from '../components/MobileCta.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { SITE, brandName } from '../config/site.js';
+import { graph, orgSchema, websiteSchema, breadcrumbSchema, abs } from '../lib/schema.js';
+
+const { title, description, ogImage = '/og/default.png', schema = [], crumbs = null, noindex = false } = Astro.props;
+const canonical = abs(Astro.url.pathname);
+const fullTitle = title.includes(brandName()) ? title : `${title} | ${brandName()}`;
+const nodes = [orgSchema(), websiteSchema(), ...(crumbs ? [breadcrumbSchema(crumbs)] : []), ...schema];
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{fullTitle}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  {noindex && <meta name="robots" content="noindex" />}
+  <meta name="theme-color" content="#1e4a35" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content={brandName()} />
+  <meta property="og:title" content={fullTitle} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:image" content={abs(ogImage)} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="en_US" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="geo.region" content="US-OR" />
+  <meta name="geo.placename" content="Lake Oswego; West Linn; Oregon City; Gladstone; Milwaukie" />
+  <link rel="alternate" type="text/plain" href="/llms.txt" title="LLM summary" />
+  <script type="application/ld+json" set:html={JSON.stringify(graph(nodes))} />
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <Header />
+  <main id="main">
+    {crumbs && <div class="wrap"><Breadcrumbs items={crumbs} /></div>}
+    <slot />
+  </main>
+  <Footer />
+  <MobileCta />
+</body>
+</html>

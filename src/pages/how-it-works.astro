@@ -1,0 +1,47 @@
+---
+import Base from '../layouts/Base.astro';
+import CtaBand from '../components/CtaBand.astro';
+import LicenseLine from '../components/LicenseLine.astro';
+import { SITE, RENTER, isRented } from '../config/site.js';
+const crumbs = [{ name: 'Home', url: '/' }, { name: 'How it works', url: '/how-it-works/' }];
+const rented = isRented();
+---
+<Base title={rented ? `About ${RENTER.businessName}` : `How ${SITE.name} Works`} description={rented ? `About ${RENTER.businessName}, Oregon CCB #${RENTER.ccbNumber}, serving Lake Oswego, West Linn, Oregon City, Gladstone and Milwaukie.` : `${SITE.name} is a local roofing resource for Portland's south metro. Here's exactly who we are, what we do, and how quote requests reach a CCB-licensed roofer.`} crumbs={crumbs}>
+  <div class="page-head"><div class="wrap">
+    <p class="eyebrow">{rented ? 'About us' : 'How it works'}</p>
+    <h1>{rented ? `About ${RENTER.businessName}` : 'Who we are, and how this works'}</h1>
+  </div></div>
+  <section style="padding-top:10px"><div class="wrap prose">
+    {rented ? (
+      <>
+        <p>{RENTER.businessName} is an Oregon CCB-licensed roofing contractor (CCB #{RENTER.ccbNumber}) serving Portland's south metro. This site's guides and cost information are here to help you make a good decision, whoever you hire.</p>
+        <p>You can verify our license, bond and complaint history any time at <a href="https://search.ccb.state.or.us/search/" rel="noopener">the Oregon Construction Contractors Board</a>.</p>
+      </>
+    ) : (
+      <>
+        <p><strong>{SITE.name} is a local roofing information site and request service. We are not a roofing contractor and we don't do roofing work.</strong></p>
+        <h2>What we do</h2>
+        <ul>
+          <li>Publish practical, sourced information about roofs in Lake Oswego, West Linn, Oregon City, Gladstone and Milwaukie: costs, permits, materials, moss and storms.</li>
+          <li>Offer free tools: a cost estimator, a roof replacement guide and a storm checklist.</li>
+          <li>When you ask for a quote, pass your request to one independent roofing company that holds an active Oregon CCB license and serves your area.</li>
+        </ul>
+        <h2>What happens when you request a quote</h2>
+        <ol>
+          <li>You fill out the form (or call). We collect only what a roofer needs to contact you.</li>
+          <li>We pass it to an independent, CCB-licensed roofer serving your city. They contact you directly.</li>
+          <li>Before any work is agreed, they give you their business name and CCB number. Check it at <a href="https://search.ccb.state.or.us/search/" rel="noopener">search.ccb.state.or.us</a>.</li>
+          <li>Any contract, price, warranty and work is between you and that roofer. You're never obligated to hire them.</li>
+        </ol>
+        <h2>Is it free?</h2>
+        <p>Yes, for homeowners. The site may be supported by the roofing company it works with. That never changes what we publish about costs or how to vet a contractor.</p>
+        <h2>Why we're upfront about this</h2>
+        <p>Oregon law requires anyone advertising contractor services to hold a CCB license and show the license number. We don't hold one, so we don't advertise ourselves as a contractor, and we'll always tell you who the licensed roofer is.</p>
+      </>
+    )}
+    <div class="callout"><LicenseLine /></div>
+    <h2>Questions or corrections?</h2>
+    <p>Email <a href={`mailto:${SITE.email}`}>{SITE.email}</a>. If you spot something out of date (a permit rule, a cost source), tell us and we'll fix it.</p>
+  </div></section>
+  <CtaBand />
+</Base>

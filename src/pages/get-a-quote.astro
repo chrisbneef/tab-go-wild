@@ -1,0 +1,24 @@
+---
+import Base from '../layouts/Base.astro';
+import QuoteForm from '../components/QuoteForm.astro';
+import Icon from '../components/Icon.astro';
+import { activePhone, canCall, isRented, RENTER } from '../config/site.js';
+const crumbs = [{ name: 'Home', url: '/' }, { name: 'Get a quote', url: '/get-a-quote/' }];
+const phone = activePhone();
+---
+<Base title="Get a Free Roof Quote | Lake Oswego, West Linn, Oregon City" description="Request a free, no-obligation roof quote from a CCB-licensed local roofer in Lake Oswego, West Linn, Oregon City, Gladstone or Milwaukie." crumbs={crumbs}>
+  <section style="padding-top:22px"><div class="wrap layout-2">
+    <div class="prose">
+      <h1>Get a free roof quote</h1>
+      <p class="lead">Two minutes now saves a lot of phone tag. {isRented() ? `${RENTER.businessName} will call you back to set up a free inspection.` : 'A CCB-licensed local roofer will call you to set up a free inspection.'}</p>
+      <ul class="trust-row" style="flex-direction:column;align-items:flex-start">
+        <li><Icon name="shield" />Oregon CCB-licensed roofers only</li>
+        <li><Icon name="file" />Written bid, no obligation</li>
+        <li><Icon name="clock" />Leak right now? Pick "Leak or damage now" so it's flagged urgent</li>
+      </ul>
+      {canCall() && <p>Prefer to talk? Call <a href={`tel:${phone.e164}`}>{phone.display}</a>.</p>}
+      <p class="small muted">Roof actively leaking? See the <a href="/resources/storm-leak-checklist/">first-steps checklist</a> while you wait.</p>
+    </div>
+    <div><QuoteForm id="quote" source="quote-page" /></div>
+  </div></section>
+</Base>

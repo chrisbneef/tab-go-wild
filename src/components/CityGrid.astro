@@ -1,0 +1,13 @@
+---
+import { CITIES } from '../data/cities.js';
+const { exclude = null } = Astro.props;
+---
+<div class="grid g3">
+  {CITIES.filter((c) => c.slug !== exclude).map((c) => (
+    <a class="card" href={`/areas/${c.slug}/`}>
+      <h3>{c.name}</h3>
+      <p class="muted small">Median home built {c.census.medianYearBuilt} · {c.census.ownerShare}% owner-occupied</p>
+      <span class="more">Roofing in {c.name} →</span>
+    </a>
+  ))}
+</div>

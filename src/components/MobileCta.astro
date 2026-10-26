@@ -1,0 +1,10 @@
+---
+import { activePhone, canCall } from '../config/site.js';
+const phone = activePhone();
+---
+<div class="mobile-cta" role="complementary" aria-label="Quick contact">
+  {canCall()
+    ? <a class="btn btn-ghost" href={`tel:${phone.e164}`}>Call {phone.display}</a>
+    : <a class="btn btn-ghost" href="/roof-cost-estimator/">Cost estimator</a>}
+  <a class="btn btn-primary" href="/get-a-quote/">Free quote</a>
+</div>

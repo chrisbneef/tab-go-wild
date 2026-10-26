@@ -1,0 +1,47 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { SITE, brandName, activePhone, canCall, isRented } from '../config/site.js';
+const phone = activePhone();
+const links = [
+  ['/services/', 'Services'],
+  ['/areas/', 'Areas'],
+  ['/roof-replacement-cost/', 'Costs'],
+  ['/roof-cost-estimator/', 'Estimator'],
+  ['/resources/', 'Guides'],
+  ['/how-it-works/', 'How it works'],
+];
+---
+<header class="site-header">
+  <div class="wrap">
+    <a class="logo" href="/" aria-label={`${brandName()} home`}>
+      <Logo />
+      <span>{brandName()}<small>{isRented() ? 'Lake Oswego · West Linn · Oregon City' : SITE.tagline}</small></span>
+    </a>
+    <nav class="nav" aria-label="Main">
+      {links.map(([href, label]) => <a href={href}>{label}</a>)}
+    </nav>
+    <div class="header-cta">
+      {canCall() && <a class="btn btn-ghost" href={`tel:${phone.e164}`} aria-label={`Call ${phone.display}`}><Icon name="phone" class="i" />Call</a>}
+      <a class="btn btn-primary" href="/get-a-quote/">Free quote</a>
+      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mnav" aria-label="Open menu" data-menu><Icon name="menu" /></button>
+    </div>
+  </div>
+  <nav id="mnav" class="mobile-nav" aria-label="Mobile">
+    {links.map(([href, label]) => <a href={href}>{label}</a>)}
+    <a href="/faq/">FAQ</a>
+    <a href="/get-a-quote/">Get a free quote</a>
+  </nav>
+</header>
+<script>
+  const b = document.querySelector('[data-menu]');
+  const n = document.getElementById('mnav');
+  if (b && n) b.addEventListener('click', () => {
+    const open = n.classList.toggle('open');
+    b.setAttribute('aria-expanded', String(open));
+  });
+</script>
+<style>
+  .header-cta :global(.i){width:18px;height:18px}
+  @media (max-width:420px){ .header-cta .btn-ghost{display:none} }
+</style>

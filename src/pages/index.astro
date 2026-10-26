@@ -1,0 +1,153 @@
+---
+import Base from '../layouts/Base.astro';
+import HeroArt from '../components/HeroArt.astro';
+import Icon from '../components/Icon.astro';
+import QuoteForm from '../components/QuoteForm.astro';
+import ServiceGrid from '../components/ServiceGrid.astro';
+import CityGrid from '../components/CityGrid.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { SITE, RENTER, isRented, brandName } from '../config/site.js';
+import { GENERAL_FAQS } from '../data/faqs.js';
+import { faqSchema } from '../lib/schema.js';
+const faqs = GENERAL_FAQS.slice(0, 5);
+const rented = isRented();
+---
+<Base
+  title={`${brandName()} | Roof Replacement & Repair in Lake Oswego, West Linn & Oregon City`}
+  description="Roof leaking, mossy or just old? Straight answers on roof costs, permits and materials for Portland's south metro, and a free quote from a CCB-licensed local roofer."
+  schema={[faqSchema(faqs)]}
+>
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">Lake Oswego · West Linn · Oregon City · Gladstone · Milwaukie</p>
+        <h1>A dry, solid roof over your family, without the guesswork.</h1>
+        <p class="lead">Oregon winters find every weak spot. Get a straight answer on what your roof needs and what it should cost, from a {rented ? 'licensed' : 'CCB-licensed'} local roofer.</p>
+        <div class="btn-row">
+          <a class="btn btn-primary" href="#quote">Get my free quote</a>
+          <a class="btn btn-ghost" href="/roof-cost-estimator/">Estimate my cost</a>
+        </div>
+        <ul class="trust-row">
+          <li><Icon name="shield" />{rented ? `Oregon CCB #${RENTER.ccbNumber}` : 'Oregon CCB-licensed roofers only'}</li>
+          <li><Icon name="file" />Written bids, no pressure</li>
+          <li><Icon name="calc" />Sourced cost ranges</li>
+        </ul>
+      </div>
+      <div class="hero-art"><HeroArt /></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap narrow center">
+      <p class="eyebrow">Sound familiar?</p>
+      <h2>You shouldn't have to become a roofing expert to protect your home.</h2>
+      <p class="lead">Maybe there's a new stain on the ceiling after the last storm. Maybe the moss is winning, or the roof is pushing 25 and you don't know if you have one winter left or five. Then come the quotes that are thousands apart, the door-knockers after every windstorm, and the nagging worry about getting it wrong on a $15,000+ decision.</p>
+    </div>
+    <div class="wrap">
+      <div class="grid g3" style="margin-top:22px">
+        <div class="card"><div class="icon-badge"><Icon name="drop" /></div><h3>The leak you can't pin down</h3><p class="muted">Water travels. The stain is rarely where the hole is, and every rainy week it spreads into insulation and drywall.</p></div>
+        <div class="card"><div class="icon-badge"><Icon name="leaf" /></div><h3>Moss, needles and clogged gutters</h3><p class="muted">Shade and eight wet months make south metro roofs prime moss habitat, and moss holds water against shingles.</p></div>
+        <div class="card"><div class="icon-badge"><Icon name="search" /></div><h3>Who do you trust?</h3><p class="muted">Bids that don't match, unclear warranties, and contractors you can't check. It's hard to know what a fair price is.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-alt">
+    <div class="wrap">
+      <div class="layout-2">
+        <div>
+          <p class="eyebrow">{rented ? 'Why homeowners call us' : 'How we help'}</p>
+          <h2>{rented ? `${RENTER.businessName}: local roofers who explain before they quote.` : 'We know south metro roofs, and we only work with licensed roofers.'}</h2>
+          <p>{rented
+            ? 'We know these neighborhoods, the permit offices and the weather. You get a clear inspection, a written bid, and a roof built for Oregon rain.'
+            : `${SITE.name} is a local resource, not a contractor. We've done the homework on costs, permits and materials for Lake Oswego, West Linn, Oregon City, Gladstone and Milwaukie, and we connect you with an independent roofer who holds an active Oregon CCB license.`}</p>
+          <ul class="steps" style="grid-template-columns:1fr;margin-top:22px">
+            <li><h3>Tell us about your roof</h3><p class="muted" style="margin:0">Two minutes: your city, what's going on, and when you'd like help.</p></li>
+            <li><h3>A licensed local roofer calls you</h3><p class="muted" style="margin:0">They set up a free inspection. You get their business name and CCB # up front, so you can check it.</p></li>
+            <li><h3>Get a written bid and decide</h3><p class="muted" style="margin:0">Materials, warranty, permit and price in writing. No pressure, no obligation.</p></li>
+          </ul>
+        </div>
+        <div class="sticky-side"><QuoteForm source="home" /></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <p class="eyebrow">Services</p>
+      <h2>Whatever your roof needs</h2>
+      <p class="lead" style="max-width:60ch">From a single leaky vent boot to a full tear-off, here's what each job involves and what it typically costs here.</p>
+      <ServiceGrid />
+      <p style="margin-top:18px"><a href="/roofing-materials/">Compare roofing materials: asphalt, metal, cedar shake and flat roofs →</a></p>
+    </div>
+  </section>
+
+  <section class="section-alt">
+    <div class="wrap">
+      <div class="stakes">
+        <div class="stake bad">
+          <h3>Wait another winter, and…</h3>
+          <ul>
+            <li>A small leak rots decking and soaks insulation</li>
+            <li>Ceiling, drywall and paint repairs pile onto the roof bill</li>
+            <li>Moss damage that insurance won't cover</li>
+            <li>A rushed decision after a storm, with whoever's free</li>
+          </ul>
+        </div>
+        <div class="stake good">
+          <h3>Get ahead of it, and…</h3>
+          <ul>
+            <li>A dry house through the whole rainy season</li>
+            <li>A fair price you understand, in writing</li>
+            <li>A licensed roofer you checked yourself</li>
+            <li>One less thing to worry about for decades</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="grid g2" style="align-items:center">
+        <div>
+          <p class="eyebrow">Free tools</p>
+          <h2>Know your numbers before anyone climbs a ladder</h2>
+          <p>Our estimator turns your home's size and roof pitch into a price range using published Oregon and Portland-area cost data, with every source listed. Our free guide walks you through choosing a roofer, reading a bid, and Oregon's permit and license basics.</p>
+          <div class="btn-row">
+            <a class="btn btn-primary" href="/roof-cost-estimator/">Try the cost estimator</a>
+            <a class="btn btn-ghost" href="/resources/roof-replacement-guide/">Get the free guide</a>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Oregon Homeowner's Roof Replacement Guide</h3>
+          <p class="muted">A printable 8-page guide and checklist: signs it's time, materials for our climate, how to vet a CCB-licensed roofer, what a good bid includes, permits, insurance and moss care.</p>
+          <a href="/resources/roof-replacement-guide/" class="more" style="font-weight:700">Download the PDF →</a>
+          <hr style="border:0;border-top:1px solid var(--line);margin:16px 0" />
+          <h3>Roof leaking right now?</h3>
+          <p class="muted">Follow the <a href="/resources/storm-leak-checklist/">storm &amp; leak first-steps checklist</a>: safety, containing water, photos for insurance, and tarping.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-alt">
+    <div class="wrap">
+      <p class="eyebrow">Service areas</p>
+      <h2>Local to Portland's south metro</h2>
+      <p class="lead" style="max-width:60ch">Each city has its own housing stock, permit office and tree rules. Start with yours.</p>
+      <CityGrid />
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap narrow">
+      <p class="eyebrow">Common questions</p>
+      <h2>Roofing questions we hear most</h2>
+      {faqs.map((f) => <details><summary>{f.q}</summary><div class="a" set:html={f.a} /></details>)}
+      <p><a href="/faq/">See all FAQs →</a></p>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>

@@ -1,0 +1,30 @@
+---
+import Base from '../../layouts/Base.astro';
+import ServiceGrid from '../../components/ServiceGrid.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { SERVICES } from '../../data/services.js';
+import { CITIES } from '../../data/cities.js';
+const crumbs = [{ name: 'Home', url: '/' }, { name: 'Services', url: '/services/' }];
+---
+<Base title="Roofing Services in Lake Oswego, West Linn & Oregon City" description="Roof replacement, repair, emergency leak and storm repair, inspections, gutters, moss removal and skylights for Portland's south metro, with sourced cost ranges." crumbs={crumbs}>
+  <div class="page-head"><div class="wrap">
+    <p class="eyebrow">Services</p>
+    <h1>Roofing services for the south metro</h1>
+    <p class="lead" style="max-width:60ch">What each job involves, what drives the price, and the Oregon-specific details worth knowing before you get bids.</p>
+  </div></div>
+  <section style="padding-top:10px"><div class="wrap"><ServiceGrid /></div></section>
+  <section class="section-alt">
+    <div class="wrap">
+      <h2>Services by city</h2>
+      <p class="muted">Every service, in every city we cover.</p>
+      <div class="table-scroll"><table class="matrix">
+        <thead><tr><th>Service</th>{CITIES.map((c) => <th><a href={`/areas/${c.slug}/`}>{c.name}</a></th>)}</tr></thead>
+        <tbody>{SERVICES.map((s) => (
+          <tr><th><a href={`/services/${s.slug}/`}>{s.name}</a></th>{CITIES.map((c) => <td><a href={`/areas/${c.slug}/#${s.slug}`}>{s.name.split(' ')[0]} · {c.name}</a></td>)}</tr>
+        ))}</tbody>
+      </table></div>
+      <p style="margin-top:16px"><a href="/roofing-materials/">Compare roofing materials →</a></p>
+    </div>
+  </section>
+  <CtaBand />
+</Base>

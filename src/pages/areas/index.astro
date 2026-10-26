@@ -1,0 +1,27 @@
+---
+import Base from '../../layouts/Base.astro';
+import CityGrid from '../../components/CityGrid.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { CITIES } from '../../data/cities.js';
+import { SERVICES } from '../../data/services.js';
+const crumbs = [{ name: 'Home', url: '/' }, { name: 'Service areas', url: '/areas/' }];
+---
+<Base title="Roofing Service Areas: Lake Oswego, West Linn, Oregon City, Gladstone, Milwaukie" description="Roofing help across Portland's south metro. Local housing data, permit offices, tree rules and roofing services for each city." crumbs={crumbs}>
+  <div class="page-head"><div class="wrap">
+    <p class="eyebrow">Service areas</p>
+    <h1>Roofing across Portland's south metro</h1>
+    <p class="lead" style="max-width:60ch">Five cities along the Willamette, each with its own housing stock and permit office.</p>
+  </div></div>
+  <section style="padding-top:10px"><div class="wrap">
+    <CityGrid />
+    <h2 style="margin-top:40px">Every service, every city</h2>
+    <div class="table-scroll"><table class="matrix">
+      <thead><tr><th>City</th>{SERVICES.map((s) => <th>{s.name}</th>)}</tr></thead>
+      <tbody>{CITIES.map((c) => (
+        <tr><th><a href={`/areas/${c.slug}/`}>{c.name}</a></th>{SERVICES.map((s) => <td><a href={`/areas/${c.slug}/#${s.slug}`}>{s.name} in {c.name}</a></td>)}</tr>
+      ))}</tbody>
+    </table></div>
+    <p class="muted small" style="margin-top:12px">Also serving nearby unincorporated Clackamas County.</p>
+  </div></section>
+  <CtaBand />
+</Base>
