@@ -1,0 +1,15 @@
+---
+import { activePhone, canCall } from '../config/site.js';
+const { title = 'Ready for a roof you don\'t have to worry about?', text = 'Tell us about your roof in two minutes. A licensed local roofer takes it from there.' } = Astro.props;
+const phone = activePhone();
+---
+<section class="section-green">
+  <div class="wrap center">
+    <h2>{title}</h2>
+    <p style="max-width:56ch;margin:0 auto 1.4em">{text}</p>
+    <div class="btn-row" style="justify-content:center">
+      <a class="btn btn-primary" href="/get-a-quote/">Get my free quote</a>
+      {canCall() ? <a class="btn btn-light" href={`tel:${phone.e164}`}>Call {phone.display}</a> : <a class="btn btn-light" href="/roof-cost-estimator/">Estimate my cost</a>}
+    </div>
+  </div>
+</section>

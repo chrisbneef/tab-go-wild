@@ -1,0 +1,29 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE, brandName, isRented, RENTER } from '../config/site.js';
+const crumbs = [{ name: 'Home', url: '/' }, { name: 'Privacy', url: '/privacy/' }];
+---
+<Base title="Privacy Policy" description={`How ${brandName()} collects and uses information from quote requests and site visits.`} crumbs={crumbs}>
+  <section><div class="wrap prose">
+    <h1>Privacy policy</h1>
+    <p class="muted">Last updated {SITE.updated}</p>
+    <h2>What we collect</h2>
+    <p>When you request a quote, we collect what you enter: your name, phone, email (optional), city, the service you need, timing and any details you add. We also receive basic technical data any website receives (such as your browser type and pages visited) through our hosting provider. If we use analytics or call tracking, they record visits and calls to measure how the site is used.</p>
+    <h2>How we use it</h2>
+    <ul>
+      <li>To respond to your request{isRented() ? ` (your request goes to ${RENTER.businessName})` : ', including sharing it with one independent, Oregon CCB-licensed roofer serving your area so they can contact you'}.</li>
+      <li>To call or text you about your request.</li>
+      <li>To keep the site working and improve it.</li>
+    </ul>
+    <h2>What we don't do</h2>
+    <p>We don't sell your information, and we don't share it with multiple contractors to bid against each other.</p>
+    <h2>Phone calls</h2>
+    <p>Calls to the number on this site may be routed through a call-tracking service and may be recorded for quality and to confirm requests were handled.</p>
+    <h2>Your choices</h2>
+    <p>Ask us to delete your information or stop contacting you at any time: <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.</p>
+    <h2>Children</h2>
+    <p>This site isn't directed at children under 13 and we don't knowingly collect their information.</p>
+    <h2>Changes</h2>
+    <p>We'll update this page if our practices change.</p>
+  </div></section>
+</Base>

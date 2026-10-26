@@ -1,0 +1,39 @@
+---
+import Base from '../../layouts/Base.astro';
+import QuoteForm from '../../components/QuoteForm.astro';
+import SourceList from '../../components/SourceList.astro';
+import { STORM_STEPS } from '../../data/checklist.js';
+import { articleSchema } from '../../lib/schema.js';
+const url = '/resources/storm-leak-checklist/';
+const title = 'Roof Leak or Storm Damage? First-Steps Checklist for Oregon Homeowners';
+const desc = 'Roof leaking or damaged by a storm? A step-by-step checklist: safety, containing water, documenting damage for insurance, emergency tarping and avoiding storm scams in Oregon.';
+const crumbs = [{ name: 'Home', url: '/' }, { name: 'Guides & tools', url: '/resources/' }, { name: 'Storm & leak checklist', url }];
+const howto = { '@type': 'HowTo', name: 'What to do when your roof leaks or is damaged in a storm', step: STORM_STEPS.map((s, i) => ({ '@type': 'HowToStep', position: i + 1, name: s.h, text: s.items.join(' ') })) };
+const extra = [
+  { name: 'Oregon Division of Financial Regulation, storm damage', url: 'https://dfr.oregon.gov/insure/home/storm/pages/index.aspx', basis: 'page' },
+  { name: 'Oregon CCB, consumer tools', url: 'https://www.oregon.gov/ccb/pages/consumer-tools.aspx', basis: 'page' },
+  { name: 'Oregon CCB license search', url: 'https://search.ccb.state.or.us/search/', basis: 'page' },
+];
+---
+<Base title={title} description={desc} crumbs={crumbs} ogImage="/og/storm.png" schema={[articleSchema({ headline: title, description: desc, url }), howto]}>
+  <div class="page-head"><div class="wrap">
+    <p class="eyebrow">Checklist</p>
+    <h1>Roof leaking or storm-damaged? Do this first.</h1>
+    <p class="lead" style="max-width:62ch">Six steps for the first hours. Print it and stick it inside a cupboard before the next storm.</p>
+    <div class="btn-row"><a class="btn btn-primary" href="#quote">Request a roofer</a><a class="btn btn-ghost" href="/downloads/storm-leak-checklist.pdf" download>Printable PDF</a></div>
+  </div></div>
+  <section style="padding-top:20px"><div class="wrap layout-2">
+    <article class="prose">
+      {STORM_STEPS.map((s, i) => (
+        <>
+          <h2>{i + 1}. {s.h}</h2>
+          <ul>{s.items.map((it) => <li>{it}</li>)}</ul>
+        </>
+      ))}
+      <div class="callout warn"><strong>Storm chasers:</strong> after big storms, out-of-area crews go door to door. Oregon's CCB warns that scam artists target storm victims. Check the license, get it in writing, and call your insurer before you hire.</div>
+      <p><a href="/services/emergency-leak-storm-repair/">More on emergency leak and storm repair →</a></p>
+      <SourceList extra={extra} />
+    </article>
+    <aside class="sticky-side"><QuoteForm heading="Need a roofer now?" defaultService="Leak & Storm Emergency Repair" source="storm-checklist" /></aside>
+  </div></section>
+</Base>

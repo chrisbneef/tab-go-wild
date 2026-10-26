@@ -1,0 +1,64 @@
+---
+import Base from '../../layouts/Base.astro';
+import QuoteForm from '../../components/QuoteForm.astro';
+import SourceList from '../../components/SourceList.astro';
+import EstimateTable from '../../components/EstimateTable.astro';
+import { REPLACEMENT_FIGURES, MATERIAL_RATES, OTHER_COSTS } from '../../data/costs.js';
+import { CITIES, cityBySlug } from '../../data/cities.js';
+import { COST_NOTES } from '../../data/costNotes.js';
+import { articleSchema, faqSchema } from '../../lib/schema.js';
+export function getStaticPaths() { return CITIES.map((c) => ({ params: { city: c.slug } })); }
+const c = cityBySlug(Astro.params.city);
+const url = `/roof-replacement-cost/${c.slug}/`;
+const title = `Roof Replacement Cost in ${c.name}, OR (2026)`;
+const desc = `What a new roof costs in ${c.name}, Oregon in 2026: published Portland-area ranges, cost by material, example estimates by home size, and the local factors that move ${c.name} bids.`;
+const crumbs = [{ name: 'Home', url: '/' }, { name: 'Roof replacement cost', url: '/roof-replacement-cost/' }, { name: c.name, url }];
+const portland = REPLACEMENT_FIGURES.filter((f) => ['interstatePDX', 'jobin', 'stanley'].includes(f.src));
+const faqs = [
+  { q: `How much does a roof replacement cost in ${c.name}?`, a: `There's no published ${c.name}-only average, so we use Portland-area figures: about $8,200–$24,000 (Interstate Roofing), most homes $14,000–$20,000 with a full range of $12,000–$30,000+ (Jobin Roofing), and $20,000–$36,000 for asphalt on a typical 20–30 square home (Stanley Roof and Solar). ${c.name}'s housing stock, roof complexity and material choices decide where your home lands.` },
+  { q: `Do I need a permit to replace a roof in ${c.name}?`, a: c.faqs.find((f) => /permit/i.test(f.q))?.a || c.permit.note },
+  { q: 'How can I get an accurate price?', a: 'Get at least one written bid from a CCB-licensed roofer after an inspection that includes the attic. Ask for materials, underlayment, ventilation, the per-sheet decking price, permit handling, cleanup and warranty in writing.' },
+];
+const keys = [...portland.map((f) => f.src), ...Object.values(MATERIAL_RATES).flatMap((r) => r.srcs)];
+const others = CITIES.filter((x) => x.slug !== c.slug);
+---
+<Base title={title} description={desc} crumbs={crumbs} ogImage={`/og/${c.slug}.png`} schema={[articleSchema({ headline: title, description: desc, url }), faqSchema(faqs)]}>
+  <div class="page-head"><div class="wrap">
+    <p class="eyebrow">{c.name} cost guide · 2026</p>
+    <h1>Roof replacement cost in {c.name}</h1>
+    <p class="lead" style="max-width:62ch">Published Portland-area figures put a typical asphalt reroof at roughly <strong>$8,000 to $36,000</strong>. Here's how {c.name}'s homes shift that, with every number sourced.</p>
+  </div></div>
+  <section style="padding-top:20px"><div class="wrap layout-2">
+    <article class="prose">
+      <h2>The Portland-area numbers</h2>
+      <div class="table-scroll"><table>
+        <thead><tr><th>Source's measure</th><th>Published figure</th></tr></thead>
+        <tbody>{portland.map((f) => <tr><td>{f.label}</td><td>{f.value}</td></tr>)}</tbody>
+      </table></div>
+      <p class="small muted">No source we found publishes a {c.name}-only average, so treat these metro figures as the starting point.</p>
+
+      <h2>What moves the price in {c.name}</h2>
+      <p>{c.name}'s median home was built in {c.census.medianYearBuilt} and is valued around ${Math.round(c.census.medianValue / 1000)}k (Census ACS 2020–2024). That shapes the typical job:</p>
+      <ul>{COST_NOTES[c.slug].map((n) => <li>{n}</li>)}</ul>
+
+      <h2>Example estimates</h2>
+      <EstimateTable />
+
+      <h2>Other common {c.name} roofing costs</h2>
+      <div class="table-scroll"><table><tbody>
+        {OTHER_COSTS.filter((o) => /Portland\)|Moss removal|Gutter installation|Skylight replacement|inspection/i.test(o.item)).map((o) => <tr><td>{o.item}</td><td>{o.value}</td></tr>)}
+      </tbody></table></div>
+
+      <h2>Permits</h2>
+      <p>{c.permit.note} <a href={c.permit.url} rel="nofollow noopener" target="_blank">{c.permit.office}</a>{c.permit.phone ? `, ${c.permit.phone}` : ''}.</p>
+
+      <h2>Questions</h2>
+      {faqs.map((f) => <details><summary>{f.q}</summary><div class="a">{f.a}</div></details>)}
+
+      <p><a href={`/areas/${c.slug}/`}>Roofing in {c.name}: local guide →</a></p>
+      <ul class="pill-list">{others.map((o) => <li><a href={`/roof-replacement-cost/${o.slug}/`}>Roof cost in {o.name}</a></li>)}</ul>
+      <SourceList keys={[...keys, ...OTHER_COSTS.map((o) => o.src)]} extra={[{ name: `Census Reporter, ${c.name} profile (ACS 2020–2024)`, url: c.census.profile, basis: 'page' }]} />
+    </article>
+    <aside class="sticky-side"><QuoteForm heading={`Get a real number for your ${c.name} roof`} defaultCity={c.name} defaultService="Roof Replacement" source={`cost:${c.slug}`} /></aside>
+  </div></section>
+</Base>

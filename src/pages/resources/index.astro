@@ -1,0 +1,19 @@
+---
+import Base from '../../layouts/Base.astro';
+import CtaBand from '../../components/CtaBand.astro';
+const crumbs = [{ name: 'Home', url: '/' }, { name: 'Guides & tools', url: '/resources/' }];
+---
+<Base title="Free Roofing Guides & Tools for Oregon Homeowners" description="Free Oregon roof replacement guide (PDF), a storm and leak first-steps checklist, a roof cost estimator and a cost guide for Portland's south metro." crumbs={crumbs}>
+  <div class="page-head"><div class="wrap">
+    <p class="eyebrow">Guides &amp; tools</p>
+    <h1>Free roofing guides for south metro homeowners</h1>
+    <p class="lead" style="max-width:60ch">Everything here is free to read, print and share. No email required.</p>
+  </div></div>
+  <section style="padding-top:10px"><div class="wrap grid g2">
+    <a class="card" href="/resources/roof-replacement-guide/"><h3>Oregon Homeowner's Roof Replacement Guide (PDF)</h3><p class="muted">Signs it's time, materials for Oregon weather, how to vet a roofer, reading a bid, permits, insurance and moss. With a printable checklist.</p><span class="more">Get the guide →</span></a>
+    <a class="card" href="/resources/storm-leak-checklist/"><h3>Storm damage &amp; leak first steps</h3><p class="muted">What to do in the first hours after a leak or storm: safety, containing water, photos, insurance and tarping.</p><span class="more">Open the checklist →</span></a>
+    <a class="card" href="/roof-cost-estimator/"><h3>Roof cost estimator</h3><p class="muted">A price range for your home from published Oregon and Portland-area data.</p><span class="more">Estimate my roof →</span></a>
+    <a class="card" href="/roof-replacement-cost/"><h3>Roof replacement cost guide</h3><p class="muted">Every published number we found, side by side, with sources.</p><span class="more">Read the cost guide →</span></a>
+  </div></section>
+  <CtaBand />
+</Base>

@@ -1,0 +1,77 @@
+---
+import { SITE, brandName, isRented, RENTER } from '../config/site.js';
+import { SERVICES } from '../data/services.js';
+import { CITIES } from '../data/cities.js';
+const { heading = 'Get a free roof quote', sub = null, defaultService = '', defaultCity = '', id = 'quote', source = 'site' } = Astro.props;
+const subline = sub ?? (isRented()
+  ? `Tell us about your roof and ${RENTER.businessName} will call you back.`
+  : 'Tell us about your roof. A CCB-licensed local roofer will call you to set up a free look. No obligation.');
+---
+<div class="form-card" id={id}>
+  <h2 class="h3" style="font-size:1.4rem">{heading}</h2>
+  <p class="muted small">{subline}</p>
+  <form class="quote-form" action={SITE.formEndpoint} method="POST" data-endpoint={SITE.formEndpoint} novalidate>
+    <input type="hidden" name="source" value={source} />
+    <input type="hidden" name="page" value={Astro.url.pathname} />
+    <div class="hp" aria-hidden="true"><label>Leave this empty<input type="text" name="company_website" tabindex="-1" autocomplete="off" /></label></div>
+    <div class="row2">
+      <div class="field"><label for={`${id}-name`}>Name</label><input id={`${id}-name`} name="name" autocomplete="name" required /></div>
+      <div class="field"><label for={`${id}-phone`}>Phone</label><input id={`${id}-phone`} name="phone" type="tel" autocomplete="tel" inputmode="tel" required /></div>
+    </div>
+    <div class="field"><label for={`${id}-email`}>Email <span class="muted">(optional)</span></label><input id={`${id}-email`} name="email" type="email" autocomplete="email" /></div>
+    <div class="row2">
+      <div class="field"><label for={`${id}-city`}>City</label>
+        <select id={`${id}-city`} name="city" required>
+          <option value="">Choose…</option>
+          {CITIES.map((c) => <option value={c.name} selected={c.name === defaultCity}>{c.name}</option>)}
+          <option value="Other">Other nearby</option>
+        </select>
+      </div>
+      <div class="field"><label for={`${id}-service`}>What do you need?</label>
+        <select id={`${id}-service`} name="service" required>
+          <option value="">Choose…</option>
+          {SERVICES.map((s) => <option value={s.name} selected={s.name === defaultService}>{s.name}</option>)}
+          <option value="Not sure">Not sure yet</option>
+        </select>
+      </div>
+    </div>
+    <div class="field"><label for={`${id}-timeline`}>Timing</label>
+      <select id={`${id}-timeline`} name="timeline">
+        <option>Leak or damage now</option>
+        <option selected>In the next 1–3 months</option>
+        <option>Just planning / getting prices</option>
+      </select>
+    </div>
+    <div class="field"><label for={`${id}-details`}>Anything we should know? <span class="muted">(optional)</span></label><textarea id={`${id}-details`} name="details" placeholder="Roof age, material, where the leak is…"></textarea></div>
+    <button class="btn btn-primary" type="submit" style="width:100%">Request my free quote</button>
+    <p class="form-status" role="status" aria-live="polite"></p>
+    <p class="consent">By sending this you agree we may call or text you about your request{isRented() ? '' : ' and share it with one independent, CCB-licensed roofer serving your area'}. No spam, no selling your info. See our <a href="/privacy/">privacy policy</a>.</p>
+  </form>
+</div>
+<script>
+  document.querySelectorAll('form.quote-form').forEach((form) => {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const status = form.querySelector('.form-status');
+      const btn = form.querySelector('button[type=submit]');
+      const data = Object.fromEntries(new FormData(form).entries());
+      if (!data.name || !data.phone || !data.city || !data.service) {
+        status.className = 'form-status err';
+        status.textContent = 'Please add your name, phone, city and what you need.';
+        return;
+      }
+      // Attach estimator context if the visitor used it
+      try { const est = sessionStorage.getItem('wfr_estimate'); if (est) data.estimate = est; } catch {}
+      btn.disabled = true; btn.textContent = 'Sending…';
+      try {
+        const res = await fetch(form.dataset.endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(data) });
+        if (!res.ok) throw new Error(String(res.status));
+        window.location.href = '/thank-you/';
+      } catch (err) {
+        status.className = 'form-status err';
+        status.textContent = 'That didn\'t go through. Please try again in a minute, or use the contact details at the bottom of the page.';
+        btn.disabled = false; btn.textContent = 'Request my free quote';
+      }
+    });
+  });
+</script>

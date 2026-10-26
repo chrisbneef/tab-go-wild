@@ -1,0 +1,29 @@
+---
+import Base from '../../layouts/Base.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import SourceList from '../../components/SourceList.astro';
+import { MATERIALS } from '../../data/services.js';
+import { MATERIAL_RATES } from '../../data/costs.js';
+const crumbs = [{ name: 'Home', url: '/' }, { name: 'Roofing materials', url: '/roofing-materials/' }];
+const keys = Object.values(MATERIAL_RATES).flatMap((r) => r.srcs);
+---
+<Base title="Roofing Materials for Oregon Homes: Asphalt, Metal, Cedar & Flat" description="Asphalt shingles, standing-seam metal, cedar shake and flat TPO roofs compared for Oregon rain and moss: lifespan, pros and cons, and installed cost per square foot with sources." crumbs={crumbs}>
+  <div class="page-head"><div class="wrap">
+    <p class="eyebrow">Roofing materials</p>
+    <h1>Which roof is right for an Oregon home?</h1>
+    <p class="lead" style="max-width:62ch">Rain, shade and moss change the math. Here's how the four main options compare.</p>
+  </div></div>
+  <section style="padding-top:10px"><div class="wrap">
+    <div class="table-scroll prose" style="max-width:none"><table>
+      <thead><tr><th>Material</th><th>Installed cost / sq ft of roof (published range)</th><th>Best for</th></tr></thead>
+      <tbody>{MATERIALS.map((m) => { const r = MATERIAL_RATES[m.costKey]; return (
+        <tr><td><a href={`/roofing-materials/${m.slug}/`}><strong>{m.name}</strong></a></td><td>${r.low.toFixed(2)} – ${r.high.toFixed(2)}</td><td>{m.bestFor}</td></tr>
+      ); })}</tbody>
+    </table></div>
+    <div class="grid g2" style="margin-top:20px">
+      {MATERIALS.map((m) => <a class="card" href={`/roofing-materials/${m.slug}/`}><h3>{m.name}</h3><p class="muted">{m.short}</p><span class="more">Read more →</span></a>)}
+    </div>
+    <SourceList keys={keys} />
+  </div></section>
+  <CtaBand title="Not sure which material fits your home?" text="A licensed local roofer can look at your roof, your trees and your HOA rules and recommend the right fit." />
+</Base>
